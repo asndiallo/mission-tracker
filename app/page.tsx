@@ -3,11 +3,16 @@
 import { Milestone, Phase, Task, supabase } from '@/lib/supabase';
 import { useEffect, useState } from 'react';
 
+import { AuthForm } from '@/components/AuthForm';
 import { Button } from '@/components/ui/button';
+import { Header } from '@/components/Header';
+import { KeyMetrics } from '@/components/KeyMetrics';
 import { MilestoneList } from '@/components/MilestoneList';
 import { PhaseTimeline } from '@/components/PhaseTimeline';
+import { Plus } from 'lucide-react';
 import { SeedDataButton } from '@/components/SeedDataButton';
 import { ShipDateCountdown } from '@/components/ShipDateCountdown';
+import { TaskDialog } from '@/components/TaskDialog';
 import { TaskList } from '@/components/TaskList';
 
 export default function Home() {
@@ -17,38 +22,35 @@ export default function Home() {
   const [selectedPhaseId, setSelectedPhaseId] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState<any>(null);
+  const [taskDialogOpen, setTaskDialogOpen] = useState(false);
 
   useEffect(() => {
     checkUser();
+
+    // Listen for auth changes
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, session) => {
+      setUser(session?.user ?? null);
+      if (session?.user) {
+        loadData();
+      }
+    });
+
+    return () => subscription.unsubscribe();
   }, []);
 
   async function checkUser() {
     const {
       data: { user },
     } = await supabase.auth.getUser();
+    setUser(user);
 
-    if (!user) {
-      // Sign up with a test account (only runs once)
-      const { data, error } = await supabase.auth.signUp({
-        email: 'assane@missiontracker.dev',
-        password: 'MySecurePassword123!',
-      });
-
-      if (error && error.message.includes('already registered')) {
-        // Account exists, sign in instead
-        const { data: signInData } = await supabase.auth.signInWithPassword({
-          email: 'assane@missiontracker.dev',
-          password: 'MySecurePassword123!',
-        });
-        setUser(signInData.user);
-      } else {
-        setUser(data.user);
-      }
+    if (user) {
+      loadData();
     } else {
-      setUser(user);
+      setLoading(false);
     }
-
-    loadData();
   }
 
   async function loadData() {
@@ -67,10 +69,12 @@ export default function Home() {
     setLoading(false);
   }
 
-  const selectedPhaseTasks = selectedPhaseId
-    ? tasks.filter((t) => t.phase_id === selectedPhaseId)
-    : tasks;
+  // Show auth form if not logged in
+  if (!user && !loading) {
+    return <AuthForm onAuthSuccess={loadData} />;
+  }
 
+  // Show loading while checking auth
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
@@ -79,22 +83,22 @@ export default function Home() {
     );
   }
 
+  const selectedPhaseTasks = selectedPhaseId
+    ? tasks.filter((t) => t.phase_id === selectedPhaseId)
+    : tasks;
+
   return (
     <main className="container mx-auto px-4 py-8 max-w-7xl">
-      {/* Header */}
-      <div className="mb-8">
-        <h1 className="text-4xl font-bold text-slate-900 mb-2">
-          Mission Tracker
-        </h1>
-        <p className="text-slate-600">
-          Assane Diallo - Air Force Aerospace Medic
-        </p>
-      </div>
+      {/* Header with Sign Out */}
+      <Header userEmail={user?.email} onSignOut={() => setUser(null)} />
 
       {/* Ship Date Countdown */}
       <ShipDateCountdown shipDate="2026-02-03" />
 
-      {/* Seed Data Button (remove after first use) */}
+      {/* Key Metrics */}
+      <KeyMetrics tasks={tasks} />
+
+      {/* Seed Data Button (only show if no phases) */}
       {phases.length === 0 && (
         <div className="mb-6">
           <SeedDataButton onComplete={loadData} userId={user?.id} />
@@ -115,15 +119,24 @@ export default function Home() {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Tasks */}
         <div>
-          <h2 className="text-2xl font-semibold mb-4">
-            {selectedPhaseId
-              ? `Tasks - ${phases.find((p) => p.id === selectedPhaseId)?.name}`
-              : 'All Tasks'}
-          </h2>
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-2xl font-semibold">
+              {selectedPhaseId
+                ? `Tasks - ${
+                    phases.find((p) => p.id === selectedPhaseId)?.name
+                  }`
+                : 'All Tasks'}
+            </h2>
+            <Button onClick={() => setTaskDialogOpen(true)} size="sm">
+              <Plus className="h-4 w-4 mr-1" />
+              Add Task
+            </Button>
+          </div>
           <TaskList
             tasks={selectedPhaseTasks}
             phases={phases}
             onUpdate={loadData}
+            userId={user?.id}
           />
         </div>
 
@@ -137,6 +150,15 @@ export default function Home() {
           />
         </div>
       </div>
+
+      {/* Task Creation Dialog */}
+      <TaskDialog
+        open={taskDialogOpen}
+        onOpenChange={setTaskDialogOpen}
+        onSuccess={loadData}
+        phases={phases}
+        userId={user?.id}
+      />
     </main>
   );
 }
