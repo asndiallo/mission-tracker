@@ -1,21 +1,34 @@
 'use client';
 
+import { Milestone, Phase, Task, supabase } from '@/lib/supabase';
+
 import { Button } from '@/components/ui/button';
-import { supabase } from '@/lib/supabase';
+import { ExportButton } from '@/components/ExportButton';
 
 interface Props {
-  userEmail: string | undefined;
   onSignOut: () => void;
+  phases: Phase[];
+  tasks: Task[];
+  milestones: Milestone[];
+  activeTab: 'mission' | 'finances';
+  user: any;
 }
 
-export function Header({ userEmail, onSignOut }: Props) {
+export function Header({
+  onSignOut,
+  phases,
+  tasks,
+  milestones,
+  activeTab,
+  user,
+}: Props) {
   async function handleSignOut() {
     await supabase.auth.signOut();
     onSignOut();
   }
 
   return (
-    <div className="mb-8 flex items-center justify-between">
+    <div className="mb-8 flex items-center justify-between flex-wrap gap-4">
       <div>
         <h1 className="text-4xl font-bold text-slate-900 mb-2">
           Mission Tracker
@@ -24,11 +37,17 @@ export function Header({ userEmail, onSignOut }: Props) {
           Assane Diallo - Air Force Aerospace Medic → Nurse Corps Officer → CRNA
         </p>
       </div>
-      <div className="flex items-center gap-4">
-        {userEmail && (
-          <span className="text-sm text-slate-600">{userEmail}</span>
+      <div className="flex items-center gap-3">
+        <ExportButton
+          phases={phases}
+          tasks={tasks}
+          milestones={milestones}
+          includeFinances={activeTab === 'finances'}
+        />
+        {user?.email && (
+          <span className="text-sm text-slate-600">{user.email}</span>
         )}
-        <Button onClick={handleSignOut} variant="outline" size="sm">
+        <Button onClick={() => handleSignOut()} variant="outline" size="sm">
           Sign Out
         </Button>
       </div>

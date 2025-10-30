@@ -9,6 +9,7 @@ import { Button } from '@/components/ui/button';
 import { FinancialDashboard } from '@/components/FinancialDashboard';
 import { Header } from '@/components/Header';
 import { KeyMetrics } from '@/components/KeyMetrics';
+import { MilestoneDialog } from '@/components/MilestoneDialog';
 import { MilestoneList } from '@/components/MilestoneList';
 import { PhaseDialog } from '@/components/PhaseDialog';
 import { PhaseTimeline } from '@/components/PhaseTimeline';
@@ -22,6 +23,7 @@ export default function Home() {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [milestones, setMilestones] = useState<Milestone[]>([]);
   const [selectedPhaseId, setSelectedPhaseId] = useState<string | null>(null);
+  const [milestoneDialogOpen, setMilestoneDialogOpen] = useState(false);
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState<any>(null);
   const [taskDialogOpen, setTaskDialogOpen] = useState(false);
@@ -90,7 +92,14 @@ export default function Home() {
 
   return (
     <main className="container mx-auto px-4 py-8 max-w-7xl">
-      <Header userEmail={user?.email} onSignOut={() => setUser(null)} />
+      <Header
+        onSignOut={() => setUser(null)}
+        phases={phases}
+        tasks={tasks}
+        milestones={milestones}
+        activeTab={activeTab}
+        user={user}
+      />
 
       {/* Tab Navigation */}
       <div className="mb-6 flex gap-2 border-b">
@@ -171,11 +180,18 @@ export default function Home() {
             </div>
 
             <div>
-              <h2 className="text-2xl font-semibold mb-4">Key Milestones</h2>
+              <div className="flex items-center justify-between mb-4">
+                <h2 className="text-2xl font-semibold">Key Milestones</h2>
+                <Button onClick={() => setMilestoneDialogOpen(true)} size="sm">
+                  <Plus className="h-4 w-4 mr-1" />
+                  Add Milestone
+                </Button>
+              </div>
               <MilestoneList
                 milestones={milestones}
                 phases={phases}
                 onUpdate={loadData}
+                userId={user?.id}
               />
             </div>
           </div>
@@ -192,6 +208,14 @@ export default function Home() {
             open={phaseDialogOpen}
             onOpenChange={setPhaseDialogOpen}
             onSuccess={loadData}
+            userId={user?.id}
+          />
+
+          <MilestoneDialog
+            open={milestoneDialogOpen}
+            onOpenChange={setMilestoneDialogOpen}
+            onSuccess={loadData}
+            phases={phases}
             userId={user?.id}
           />
         </>
