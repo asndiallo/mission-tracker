@@ -59,7 +59,7 @@ export function TaskDialog({
       setPhaseId(phases[0]?.id || "");
       setDueDate("");
     }
-  }, [editTask, phases, open]);
+  }, [editTask, phases]);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();

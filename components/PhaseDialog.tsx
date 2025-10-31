@@ -60,7 +60,7 @@ export function PhaseDialog({
       setEndDate("");
       setStatus("upcoming");
     }
-  }, [editPhase, open]);
+  }, [editPhase]);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -183,7 +183,9 @@ export function PhaseDialog({
               <Label htmlFor="status">Status *</Label>
               <Select
                 value={status}
-                onValueChange={(val: any) => setStatus(val)}
+                onValueChange={(val: "upcoming" | "active" | "complete") =>
+                  setStatus(val)
+                }
                 disabled={loading}
               >
                 <SelectTrigger>

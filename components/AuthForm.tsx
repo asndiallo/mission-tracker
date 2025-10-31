@@ -47,8 +47,8 @@ export function AuthForm({ onAuthSuccess }: Props) {
         if (error) throw error;
         onAuthSuccess();
       }
-    } catch (error: any) {
-      setError(error.message);
+    } catch (error) {
+      setError(error instanceof Error ? error.message : "An error occurred");
     } finally {
       setLoading(false);
     }

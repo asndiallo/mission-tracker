@@ -61,7 +61,7 @@ export function AssetDialog({
       setPurchaseDate("");
       setNotes("");
     }
-  }, [editAsset, open]);
+  }, [editAsset]);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
