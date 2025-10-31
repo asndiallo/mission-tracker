@@ -1,6 +1,6 @@
 "use client";
 
-import { DollarSign, Plus, Target, Wifi, WifiOff } from "lucide-react";
+import { DollarSign, Map, Plus, Target, Wifi, WifiOff } from "lucide-react";
 import { useEffect, useState } from "react";
 import { AuthForm } from "@/components/AuthForm";
 import { FinancialDashboard } from "@/components/FinancialDashboard";
@@ -10,12 +10,14 @@ import { MilestoneDialog } from "@/components/MilestoneDialog";
 import { MilestoneList } from "@/components/MilestoneList";
 import { PhaseDialog } from "@/components/PhaseDialog";
 import { PhaseTimeline } from "@/components/PhaseTimeline";
+import { RoadmapDashboard } from "@/components/RoadmapDashboard";
 import { SeedDataButton } from "@/components/SeedDataButton";
 import { ShipDateCountdown } from "@/components/ShipDateCountdown";
 import { TaskDialog } from "@/components/TaskDialog";
 import { TaskList } from "@/components/TaskList";
 import { TodayNextStep } from "@/components/TodayNextStep";
 import { Button } from "@/components/ui/button";
+import { getRoadmapStats, roadmapPhases } from "@/lib/roadmapData";
 import { registerServiceWorker } from "@/lib/serviceWorker";
 import { networkStatus, storage } from "@/lib/storage";
 import {
@@ -35,7 +37,7 @@ export default function Home() {
   const [user, setUser] = useState<any>(null);
   const [taskDialogOpen, setTaskDialogOpen] = useState(false);
   const [phaseDialogOpen, setPhaseDialogOpen] = useState(false);
-  const [activeTab, setActiveTab] = useState<"mission" | "finances">("mission");
+  const [activeTab, setActiveTab] = useState<"mission" | "roadmap" | "finances">("mission");
   const [todayNextStepOpen, setTodayNextStepOpen] = useState(false);
   const [focusMode, setFocusMode] = useState(false);
   const [isOnline, setIsOnline] = useState(true);
@@ -218,6 +220,17 @@ export default function Home() {
           Mission Plan
         </button>
         <button
+          onClick={() => setActiveTab("roadmap")}
+          className={`px-4 py-2 font-medium flex items-center gap-2 border-b-2 transition-colors ${
+            activeTab === "roadmap"
+              ? "border-blue-600 text-blue-600"
+              : "border-transparent text-slate-600 hover:text-slate-900"
+          }`}
+        >
+          <Map className="h-4 w-4" />
+          Roadmap
+        </button>
+        <button
           onClick={() => setActiveTab("finances")}
           className={`px-4 py-2 font-medium flex items-center gap-2 border-b-2 transition-colors ${
             activeTab === "finances"
@@ -368,6 +381,15 @@ export default function Home() {
             userId={user?.id}
           />
         </>
+      )}
+
+      {/* Roadmap Tab */}
+      {activeTab === "roadmap" && (
+        <RoadmapDashboard
+          phases={roadmapPhases}
+          stats={getRoadmapStats()}
+          defaultView="timeline"
+        />
       )}
 
       {/* Finances Tab */}
