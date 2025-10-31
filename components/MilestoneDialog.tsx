@@ -53,7 +53,7 @@ export function MilestoneDialog({
       setDate("");
       setPhaseId("none"); // Changed from '' to 'none'
     }
-  }, [editMilestone, open]);
+  }, [editMilestone]);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();

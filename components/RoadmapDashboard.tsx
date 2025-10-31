@@ -2,12 +2,12 @@
 
 import { Calendar, Layout, List, TrendingUp } from "lucide-react";
 import { useState } from "react";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { RoadmapTimeline } from "./RoadmapTimeline";
-import { PhaseDetailView, type DetailedPhase } from "./PhaseDetailView";
 import { cn } from "@/lib/utils";
+import { type DetailedPhase, PhaseDetailView } from "./PhaseDetailView";
+import { RoadmapTimeline } from "./RoadmapTimeline";
 
 type ViewMode = "timeline" | "detailed" | "overview";
 
@@ -30,7 +30,7 @@ interface Props {
   onChecklistToggle?: (
     phaseId: string,
     checklistIndex: number,
-    itemIndex: number
+    itemIndex: number,
   ) => void;
   defaultView?: ViewMode;
 }
@@ -130,7 +130,7 @@ export function RoadmapDashboard({
 
         {/* Next Milestone (if available) */}
         {calculatedStats.nextMilestone && (
-          <Card className="bg-gradient-to-r from-blue-50 to-cyan-50 border-blue-200">
+          <Card className="bg-linear-to-r from-blue-50 to-cyan-50 border-blue-200">
             <CardContent className="pt-6">
               <div className="flex items-center gap-3">
                 <div className="h-12 w-12 rounded-full bg-blue-500 flex items-center justify-center shrink-0">
@@ -228,7 +228,7 @@ export function RoadmapDashboard({
                           onChecklistToggle(
                             selectedPhase.id,
                             checklistIndex,
-                            itemIndex
+                            itemIndex,
                           )
                       : undefined
                   }
@@ -239,9 +239,7 @@ export function RoadmapDashboard({
                 <CardContent className="pt-6">
                   <div className="text-center py-12">
                     <Layout className="h-12 w-12 text-slate-300 mx-auto mb-4" />
-                    <p className="text-slate-600 mb-2">
-                      No phase selected
-                    </p>
+                    <p className="text-slate-600 mb-2">No phase selected</p>
                     <p className="text-sm text-slate-500 mb-4">
                       Select a phase from the timeline to view details
                     </p>
@@ -265,7 +263,7 @@ export function RoadmapDashboard({
                   "cursor-pointer transition-all hover:shadow-lg border-l-4",
                   phase.status === "complete" && "border-l-green-500",
                   phase.status === "active" && "border-l-blue-500",
-                  phase.status === "upcoming" && "border-l-slate-300"
+                  phase.status === "upcoming" && "border-l-slate-300",
                 )}
                 onClick={() => handlePhaseClick(phase.id)}
               >
@@ -276,7 +274,7 @@ export function RoadmapDashboard({
                         "w-10 h-10 rounded-full flex items-center justify-center font-bold text-white shrink-0",
                         phase.status === "complete" && "bg-green-500",
                         phase.status === "active" && "bg-blue-500",
-                        phase.status === "upcoming" && "bg-slate-300"
+                        phase.status === "upcoming" && "bg-slate-300",
                       )}
                     >
                       {index}
@@ -288,7 +286,7 @@ export function RoadmapDashboard({
                       <Badge
                         className={cn(
                           phase.status === "complete" && "bg-green-600",
-                          phase.status === "active" && "bg-blue-600"
+                          phase.status === "active" && "bg-blue-600",
                         )}
                         variant={
                           phase.status === "upcoming" ? "secondary" : "default"

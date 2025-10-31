@@ -67,7 +67,7 @@ export function AccountDialog({
       setMonthlyPayment("");
       setNotes("");
     }
-  }, [editAccount, open]);
+  }, [editAccount]);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();

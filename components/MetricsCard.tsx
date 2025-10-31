@@ -1,8 +1,8 @@
 "use client";
 
 import { CheckCircle2, Circle } from "lucide-react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 
 export interface Metric {
@@ -27,7 +27,8 @@ export function MetricsCard({
 }: Props) {
   const achievedCount = metrics.filter((m) => m.achieved).length;
   const totalCount = metrics.length;
-  const progress = totalCount > 0 ? Math.round((achievedCount / totalCount) * 100) : 0;
+  const progress =
+    totalCount > 0 ? Math.round((achievedCount / totalCount) * 100) : 0;
 
   const bgColor = {
     default: "from-blue-50 to-cyan-50",
@@ -54,12 +55,14 @@ export function MetricsCard({
         bgColor,
         borderColor,
         "border-2",
-        className
+        className,
       )}
     >
       <CardHeader className="pb-3">
         <div className="flex items-center justify-between">
-          <CardTitle className={cn("text-lg flex items-center gap-2", textColor)}>
+          <CardTitle
+            className={cn("text-lg flex items-center gap-2", textColor)}
+          >
             <span>📊</span>
             <span>{title}</span>
           </CardTitle>
@@ -70,7 +73,7 @@ export function MetricsCard({
             <Badge
               className={cn(
                 progress === 100 && "bg-green-600",
-                progress > 0 && progress < 100 && "bg-blue-600"
+                progress > 0 && progress < 100 && "bg-blue-600",
               )}
               variant={progress === 0 ? "secondary" : "default"}
             >
@@ -84,7 +87,7 @@ export function MetricsCard({
               className={cn(
                 "h-2 rounded-full transition-all duration-500",
                 progress === 100 && "bg-green-500",
-                progress > 0 && progress < 100 && "bg-blue-500"
+                progress > 0 && progress < 100 && "bg-blue-500",
               )}
               style={{ width: `${progress}%` }}
             />
@@ -100,7 +103,7 @@ export function MetricsCard({
                 "flex items-start gap-3 p-3 rounded-lg border transition-all",
                 metric.achieved
                   ? "bg-white border-green-300 shadow-sm"
-                  : "bg-white/70 border-slate-200"
+                  : "bg-white/70 border-slate-200",
               )}
             >
               {metric.achieved ? (
@@ -112,7 +115,7 @@ export function MetricsCard({
                 <p
                   className={cn(
                     "text-sm font-medium",
-                    metric.achieved ? "text-slate-700" : "text-slate-600"
+                    metric.achieved ? "text-slate-700" : "text-slate-600",
                   )}
                 >
                   {metric.metric}

@@ -1,8 +1,8 @@
 "use client";
 
 import { AlertCircle, ArrowRight } from "lucide-react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 export interface DecisionBranch {
   title: string;
@@ -28,7 +28,7 @@ export function DecisionPoint({
 }: Props) {
   return (
     <Card className={className}>
-      <CardHeader className="bg-gradient-to-r from-orange-50 to-amber-50 border-b border-orange-200">
+      <CardHeader className="bg-linear-to-r from-orange-50 to-amber-50 border-b border-orange-200">
         <div className="flex items-start gap-3">
           <AlertCircle className="h-6 w-6 text-orange-600 mt-1 shrink-0" />
           <div className="flex-1">
@@ -100,7 +100,7 @@ export function DecisionPoint({
 
               {/* Recommendation */}
               {branch.recommendation && (
-                <div className="p-3 bg-gradient-to-br from-green-50 to-emerald-50 rounded-lg border-2 border-green-300">
+                <div className="p-3 bg-linear-to-br from-green-50 to-emerald-50 rounded-lg border-2 border-green-300">
                   <p className="text-xs font-semibold text-green-900 uppercase mb-1 flex items-center gap-1">
                     <span>💡</span>
                     <span>Recommendation</span>

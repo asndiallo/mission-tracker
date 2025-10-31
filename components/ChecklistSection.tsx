@@ -19,7 +19,8 @@ interface Props {
 export function ChecklistSection({ title, items, onToggle, className }: Props) {
   const completedCount = items.filter((item) => item.completed).length;
   const totalCount = items.length;
-  const progress = totalCount > 0 ? Math.round((completedCount / totalCount) * 100) : 0;
+  const progress =
+    totalCount > 0 ? Math.round((completedCount / totalCount) * 100) : 0;
 
   return (
     <Card className={className}>
@@ -33,7 +34,7 @@ export function ChecklistSection({ title, items, onToggle, className }: Props) {
             <Badge
               className={cn(
                 progress === 100 && "bg-green-600",
-                progress > 0 && progress < 100 && "bg-blue-600"
+                progress > 0 && progress < 100 && "bg-blue-600",
               )}
               variant={progress === 0 ? "secondary" : "default"}
             >
@@ -47,7 +48,7 @@ export function ChecklistSection({ title, items, onToggle, className }: Props) {
               className={cn(
                 "h-2 rounded-full transition-all duration-300",
                 progress === 100 && "bg-green-500",
-                progress > 0 && progress < 100 && "bg-blue-500"
+                progress > 0 && progress < 100 && "bg-blue-500",
               )}
               style={{ width: `${progress}%` }}
             />
@@ -64,7 +65,7 @@ export function ChecklistSection({ title, items, onToggle, className }: Props) {
                 onToggle ? "cursor-pointer" : "cursor-default",
                 item.completed
                   ? "bg-green-50 border-green-200 hover:bg-green-100"
-                  : "bg-white border-slate-200 hover:bg-slate-50"
+                  : "bg-white border-slate-200 hover:bg-slate-50",
               )}
             >
               <input
@@ -79,7 +80,7 @@ export function ChecklistSection({ title, items, onToggle, className }: Props) {
                   "flex-1 text-sm",
                   item.completed
                     ? "line-through text-slate-500"
-                    : "text-slate-700"
+                    : "text-slate-700",
                 )}
               >
                 {item.text}

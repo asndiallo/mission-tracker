@@ -1,18 +1,17 @@
 "use client";
 
 import {
-  Car,
   CreditCard,
   DollarSign,
-  Home,
   Plus,
   TrendingDown,
   TrendingUp,
 } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { type Asset, type FinancialAccount, supabase } from "@/lib/supabase";
+import type { Asset, FinancialAccount } from "@/lib/supabase";
+import { supabase } from "@/lib/supabase";
 import { AccountDialog } from "./AccountDialog";
 import { AccountList } from "./AccountList";
 import { AssetDialog } from "./AssetDialog";
@@ -30,11 +29,7 @@ export function FinancialDashboard({ userId }: Props) {
   const [accountDialogOpen, setAccountDialogOpen] = useState(false);
   const [assetDialogOpen, setAssetDialogOpen] = useState(false);
 
-  useEffect(() => {
-    loadData();
-  }, []);
-
-  async function loadData() {
+  const loadData = useCallback(async () => {
     setLoading(true);
 
     const [accountsRes, assetsRes] = await Promise.all([
@@ -46,7 +41,11 @@ export function FinancialDashboard({ userId }: Props) {
     if (assetsRes.data) setAssets(assetsRes.data);
 
     setLoading(false);
-  }
+  }, []);
+
+  useEffect(() => {
+    loadData();
+  }, [loadData]);
 
   // Calculate totals
   const checking = accounts

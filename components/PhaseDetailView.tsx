@@ -1,9 +1,15 @@
 "use client";
 
-import { AlertCircle, CheckCircle2, ChevronDown, ChevronUp } from "lucide-react";
+import {
+  AlertCircle,
+  CheckCircle2,
+  ChevronDown,
+  ChevronUp,
+} from "lucide-react";
 import { useState } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import type { Phase } from "@/lib/supabase";
 import { cn } from "@/lib/utils";
 import { formatDate } from "@/lib/utils/dates";
 
@@ -38,14 +44,11 @@ export interface DecisionBranch {
   recommendation?: string;
 }
 
-export interface DetailedPhase {
-  id: string;
-  name: string;
-  description?: string;
+export interface DetailedPhase extends Omit<Phase, 'position' | 'created_at' | 'user_id'> {
+  position?: number;
+  created_at?: string;
+  user_id?: string;
   objective?: string;
-  start_date: string;
-  end_date: string;
-  status: "upcoming" | "active" | "complete";
   sections?: PhaseSection[];
   checklists?: Checklist[];
   successMetrics?: SuccessMetric[];
@@ -59,7 +62,7 @@ interface Props {
 
 export function PhaseDetailView({ phase, onChecklistToggle }: Props) {
   const [collapsedSections, setCollapsedSections] = useState<Set<number>>(
-    new Set()
+    new Set(),
   );
 
   const toggleSection = (index: number) => {
@@ -96,7 +99,9 @@ export function PhaseDetailView({ phase, onChecklistToggle }: Props) {
                   {formatDate(phase.start_date)}
                 </span>
                 <span>→</span>
-                <span className="font-medium">{formatDate(phase.end_date)}</span>
+                <span className="font-medium">
+                  {formatDate(phase.end_date)}
+                </span>
               </div>
               {phase.objective && (
                 <div className="p-4 bg-blue-50 rounded-lg border border-blue-200">
@@ -110,7 +115,7 @@ export function PhaseDetailView({ phase, onChecklistToggle }: Props) {
             <Badge
               className={cn(
                 phase.status === "complete" && "bg-green-600",
-                phase.status === "active" && "bg-blue-600"
+                phase.status === "active" && "bg-blue-600",
               )}
               variant={phase.status === "upcoming" ? "secondary" : "default"}
             >
@@ -139,7 +144,7 @@ export function PhaseDetailView({ phase, onChecklistToggle }: Props) {
                 <CardHeader
                   className={cn(
                     "pb-3",
-                    canCollapse && "cursor-pointer hover:bg-slate-50"
+                    canCollapse && "cursor-pointer hover:bg-slate-50",
                   )}
                   onClick={() => canCollapse && toggleSection(index)}
                 >
@@ -189,7 +194,7 @@ export function PhaseDetailView({ phase, onChecklistToggle }: Props) {
           </h3>
           {phase.checklists.map((checklist, checklistIndex) => {
             const completedCount = checklist.items.filter(
-              (item) => item.completed
+              (item) => item.completed,
             ).length;
             const totalCount = checklist.items.length;
             const progress = Math.round((completedCount / totalCount) * 100);
@@ -206,7 +211,7 @@ export function PhaseDetailView({ phase, onChecklistToggle }: Props) {
                       <Badge
                         className={cn(
                           progress === 100 && "bg-green-600",
-                          progress > 0 && progress < 100 && "bg-blue-600"
+                          progress > 0 && progress < 100 && "bg-blue-600",
                         )}
                         variant={progress === 0 ? "secondary" : "default"}
                       >
@@ -219,7 +224,7 @@ export function PhaseDetailView({ phase, onChecklistToggle }: Props) {
                       className={cn(
                         "h-2 rounded-full transition-all duration-300",
                         progress === 100 && "bg-green-500",
-                        progress > 0 && progress < 100 && "bg-blue-500"
+                        progress > 0 && progress < 100 && "bg-blue-500",
                       )}
                       style={{ width: `${progress}%` }}
                     />
@@ -234,7 +239,7 @@ export function PhaseDetailView({ phase, onChecklistToggle }: Props) {
                           "flex items-start gap-3 p-3 rounded-lg border transition-all cursor-pointer",
                           item.completed
                             ? "bg-green-50 border-green-200 hover:bg-green-100"
-                            : "bg-white border-slate-200 hover:bg-slate-50"
+                            : "bg-white border-slate-200 hover:bg-slate-50",
                         )}
                       >
                         <input
@@ -250,7 +255,7 @@ export function PhaseDetailView({ phase, onChecklistToggle }: Props) {
                             "flex-1 text-sm",
                             item.completed
                               ? "line-through text-slate-500"
-                              : "text-slate-700"
+                              : "text-slate-700",
                           )}
                         >
                           {item.text}
@@ -283,7 +288,7 @@ export function PhaseDetailView({ phase, onChecklistToggle }: Props) {
                   <span
                     className={cn(
                       "mt-0.5",
-                      metric.achieved ? "text-green-600" : "text-slate-400"
+                      metric.achieved ? "text-green-600" : "text-slate-400",
                     )}
                   >
                     {metric.achieved ? "✓" : "○"}

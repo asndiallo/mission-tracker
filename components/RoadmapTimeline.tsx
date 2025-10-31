@@ -2,13 +2,17 @@
 
 import { ChevronDown, ChevronRight } from "lucide-react";
 import { useState } from "react";
+
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { type Phase } from "@/lib/supabase";
+import type { Phase } from "@/lib/supabase";
 import { cn } from "@/lib/utils";
 import { formatDate } from "@/lib/utils/dates";
 
-interface RoadmapPhase extends Phase {
+interface RoadmapPhase extends Omit<Phase, 'position' | 'created_at' | 'user_id'> {
+  position?: number;
+  created_at?: string;
+  user_id?: string;
   objective?: string;
   sections?: Array<{
     title: string;
@@ -77,14 +81,15 @@ export function RoadmapTimeline({
     if (phase.checklists && phase.checklists.length > 0) {
       const totalItems = phase.checklists.reduce(
         (sum, list) => sum + list.items.length,
-        0
+        0,
       );
       const completedItems = phase.checklists.reduce(
-        (sum, list) =>
-          sum + list.items.filter((item) => item.completed).length,
-        0
+        (sum, list) => sum + list.items.filter((item) => item.completed).length,
+        0,
       );
-      return totalItems > 0 ? Math.round((completedItems / totalItems) * 100) : 0;
+      return totalItems > 0
+        ? Math.round((completedItems / totalItems) * 100)
+        : 0;
     }
 
     // Default for active phases without checklists
@@ -105,7 +110,7 @@ export function RoadmapTimeline({
               phase.status === "complete" && "border-l-green-500",
               phase.status === "active" && "border-l-blue-500",
               phase.status === "upcoming" && "border-l-slate-300",
-              isExpanded && "ring-2 ring-blue-400 shadow-xl"
+              isExpanded && "ring-2 ring-blue-400 shadow-xl",
             )}
             onClick={() => handlePhaseClick(phase.id)}
           >
@@ -115,7 +120,7 @@ export function RoadmapTimeline({
                 <div
                   className={cn(
                     "w-14 h-14 rounded-full flex items-center justify-center font-bold text-xl shrink-0 shadow-md",
-                    getStatusColor(phase.status)
+                    getStatusColor(phase.status),
                   )}
                 >
                   {index}
@@ -145,7 +150,7 @@ export function RoadmapTimeline({
                         "h-2 rounded-full transition-all duration-500",
                         phase.status === "complete" && "bg-green-500",
                         phase.status === "active" && "bg-blue-500",
-                        phase.status === "upcoming" && "bg-slate-400"
+                        phase.status === "upcoming" && "bg-slate-400",
                       )}
                       style={{ width: `${progress}%` }}
                     />
@@ -207,7 +212,10 @@ export function RoadmapTimeline({
                         >
                           {section.icon && <span>{section.icon}</span>}
                           <span className="font-medium">{section.title}</span>
-                          <Badge variant="secondary" className="ml-auto text-xs">
+                          <Badge
+                            variant="secondary"
+                            className="ml-auto text-xs"
+                          >
                             {section.items.length}
                           </Badge>
                         </div>
@@ -229,7 +237,9 @@ export function RoadmapTimeline({
                           className="text-sm flex items-start gap-2 p-2 bg-green-50 rounded border border-green-200"
                         >
                           <span className="text-green-600">✓</span>
-                          <span className="text-slate-700">{metric.metric}</span>
+                          <span className="text-slate-700">
+                            {metric.metric}
+                          </span>
                           {metric.target && (
                             <Badge className="ml-auto bg-green-600 text-xs">
                               {metric.target}

@@ -1,31 +1,38 @@
-"use client";
+'use client';
 
-import { DollarSign, Map, Plus, Target, Wifi, WifiOff } from "lucide-react";
-import { useEffect, useState } from "react";
-import { AuthForm } from "@/components/AuthForm";
-import { FinancialDashboard } from "@/components/FinancialDashboard";
-import { Header } from "@/components/Header";
-import { KeyMetrics } from "@/components/KeyMetrics";
-import { MilestoneDialog } from "@/components/MilestoneDialog";
-import { MilestoneList } from "@/components/MilestoneList";
-import { PhaseDialog } from "@/components/PhaseDialog";
-import { PhaseTimeline } from "@/components/PhaseTimeline";
-import { RoadmapDashboard } from "@/components/RoadmapDashboard";
-import { SeedDataButton } from "@/components/SeedDataButton";
-import { ShipDateCountdown } from "@/components/ShipDateCountdown";
-import { TaskDialog } from "@/components/TaskDialog";
-import { TaskList } from "@/components/TaskList";
-import { TodayNextStep } from "@/components/TodayNextStep";
-import { Button } from "@/components/ui/button";
-import { getRoadmapStats, roadmapPhases } from "@/lib/roadmapData";
-import { registerServiceWorker } from "@/lib/serviceWorker";
-import { networkStatus, storage } from "@/lib/storage";
+import {
+  DollarSign,
+  Map as MapIcon,
+  Plus,
+  Target,
+  Wifi,
+  WifiOff,
+} from 'lucide-react';
+import { useCallback, useEffect, useState } from 'react';
+import { AuthForm } from '@/components/AuthForm';
+import { FinancialDashboard } from '@/components/FinancialDashboard';
+import { Header } from '@/components/Header';
+import { KeyMetrics } from '@/components/KeyMetrics';
+import { MilestoneDialog } from '@/components/MilestoneDialog';
+import { MilestoneList } from '@/components/MilestoneList';
+import { PhaseDialog } from '@/components/PhaseDialog';
+import { PhaseTimeline } from '@/components/PhaseTimeline';
+import { RoadmapDashboard } from '@/components/RoadmapDashboard';
+import { SeedDataButton } from '@/components/SeedDataButton';
+import { ShipDateCountdown } from '@/components/ShipDateCountdown';
+import { TaskDialog } from '@/components/TaskDialog';
+import { TaskList } from '@/components/TaskList';
+import { TodayNextStep } from '@/components/TodayNextStep';
+import { Button } from '@/components/ui/button';
+import { getRoadmapStats, roadmapPhases } from '@/lib/roadmapData';
+import { registerServiceWorker } from '@/lib/serviceWorker';
+import { networkStatus, storage } from '@/lib/storage';
 import {
   type Milestone,
   type Phase,
   supabase,
   type Task,
-} from "@/lib/supabase";
+} from '@/lib/supabase';
 
 export default function Home() {
   const [phases, setPhases] = useState<Phase[]>([]);
@@ -34,75 +41,18 @@ export default function Home() {
   const [selectedPhaseId, setSelectedPhaseId] = useState<string | null>(null);
   const [milestoneDialogOpen, setMilestoneDialogOpen] = useState(false);
   const [loading, setLoading] = useState(true);
-  const [user, setUser] = useState<any>(null);
+  const [user, setUser] = useState<{ id: string; email?: string } | null>(null);
   const [taskDialogOpen, setTaskDialogOpen] = useState(false);
   const [phaseDialogOpen, setPhaseDialogOpen] = useState(false);
-  const [activeTab, setActiveTab] = useState<"mission" | "roadmap" | "finances">("mission");
+  const [activeTab, setActiveTab] = useState<
+    'mission' | 'roadmap' | 'finances'
+  >('mission');
   const [todayNextStepOpen, setTodayNextStepOpen] = useState(false);
   const [focusMode, setFocusMode] = useState(false);
   const [isOnline, setIsOnline] = useState(true);
-  const [lastSync, setLastSync] = useState<Date | null>(null);
+  const [_lastSync, setLastSync] = useState<Date | null>(null);
 
-  useEffect(() => {
-    checkUser();
-
-    // Register service worker for offline support
-    registerServiceWorker();
-
-    // Load focus mode preference from localStorage
-    setFocusMode(storage.getFocusMode());
-
-    // Set up network status listeners
-    setIsOnline(networkStatus.isOnline());
-    const unsubOnline = networkStatus.onOnline(() => {
-      setIsOnline(true);
-      // Sync data when coming back online
-      if (user) loadData();
-    });
-    const unsubOffline = networkStatus.onOffline(() => {
-      setIsOnline(false);
-    });
-
-    const {
-      data: { subscription },
-    } = supabase.auth.onAuthStateChange((_event, session) => {
-      setUser(session?.user ?? null);
-      if (session?.user) {
-        loadData();
-      }
-    });
-
-    return () => {
-      subscription.unsubscribe();
-      unsubOnline();
-      unsubOffline();
-    };
-  }, []);
-
-  async function checkUser() {
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
-    setUser(user);
-
-    if (user) {
-      // Try to load from cache first for faster initial render
-      if (storage.hasOfflineData()) {
-        setPhases(storage.getPhases());
-        setTasks(storage.getTasks());
-        setMilestones(storage.getMilestones());
-        setLastSync(storage.getLastSync());
-        setLoading(false);
-      }
-
-      // Then load from network
-      loadData();
-    } else {
-      setLoading(false);
-    }
-  }
-
-  async function loadData() {
+  const loadData = useCallback(async (openTodayNextStep = false) => {
     // If offline, use cached data
     if (!networkStatus.isOnline()) {
       if (storage.hasOfflineData()) {
@@ -112,7 +62,9 @@ export default function Home() {
         setLastSync(storage.getLastSync());
       }
       setLoading(false);
-      setTodayNextStepOpen(true);
+      if (openTodayNextStep) {
+        setTodayNextStepOpen(true);
+      }
       return;
     }
 
@@ -120,9 +72,9 @@ export default function Home() {
 
     try {
       const [phasesRes, tasksRes, milestonesRes] = await Promise.all([
-        supabase.from("phases").select("*").order("position"),
-        supabase.from("tasks").select("*").order("position"),
-        supabase.from("milestones").select("*").order("date"),
+        supabase.from('phases').select('*').order('position'),
+        supabase.from('tasks').select('*').order('position'),
+        supabase.from('milestones').select('*').order('date'),
       ]);
 
       if (phasesRes.data) {
@@ -140,7 +92,7 @@ export default function Home() {
 
       setLastSync(new Date());
     } catch (error) {
-      console.error("Failed to load data:", error);
+      console.error('Failed to load data:', error);
       // Fall back to cached data on error
       if (storage.hasOfflineData()) {
         setPhases(storage.getPhases());
@@ -152,12 +104,75 @@ export default function Home() {
 
     setLoading(false);
 
-    // Open "Today → Next Step" widget on login
-    setTodayNextStepOpen(true);
-  }
+    // Open "Today → Next Step" widget on login if requested
+    if (openTodayNextStep) {
+      setTodayNextStepOpen(true);
+    }
+  }, []);
+
+  const checkUser = useCallback(async () => {
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+    setUser(user);
+
+    if (user) {
+      // Try to load from cache first for faster initial render
+      if (storage.hasOfflineData()) {
+        setPhases(storage.getPhases());
+        setTasks(storage.getTasks());
+        setMilestones(storage.getMilestones());
+        setLastSync(storage.getLastSync());
+        setLoading(false);
+      }
+
+      // Load data but don't auto-open dialog (only on explicit login)
+      loadData(false);
+    } else {
+      setLoading(false);
+    }
+  }, [loadData]);
+
+  useEffect(() => {
+    checkUser();
+
+    // Register service worker for offline support
+    registerServiceWorker();
+
+    // Load focus mode preference from localStorage
+    setFocusMode(storage.getFocusMode());
+
+    // Set up network status listeners
+    setIsOnline(networkStatus.isOnline());
+    const unsubOnline = networkStatus.onOnline(() => {
+      setIsOnline(true);
+      // Sync data when coming back online
+      loadData();
+    });
+    const unsubOffline = networkStatus.onOffline(() => {
+      setIsOnline(false);
+    });
+
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((event, session) => {
+      setUser(session?.user ?? null);
+      if (session?.user) {
+        // Only open dialog on SIGNED_IN event, not on TOKEN_REFRESHED or other events
+        const shouldOpenDialog = event === 'SIGNED_IN';
+        loadData(shouldOpenDialog);
+      }
+    });
+
+    return () => {
+      subscription.unsubscribe();
+      unsubOnline();
+      unsubOffline();
+    };
+  }, [checkUser, loadData]);
 
   if (!user && !loading) {
-    return <AuthForm onAuthSuccess={loadData} />;
+    return <AuthForm onAuthSuccess={() => loadData(true)} />;
   }
 
   if (loading) {
@@ -173,15 +188,15 @@ export default function Home() {
     : tasks;
 
   const handleTaskComplete = async (taskId: string) => {
-    await supabase.from("tasks").update({ completed: true }).eq("id", taskId);
+    await supabase.from('tasks').update({ completed: true }).eq('id', taskId);
     loadData();
   };
 
   const handleMilestoneComplete = async (milestoneId: string) => {
     await supabase
-      .from("milestones")
+      .from('milestones')
       .update({ completed: true })
-      .eq("id", milestoneId);
+      .eq('id', milestoneId);
     loadData();
   };
 
@@ -209,33 +224,36 @@ export default function Home() {
       {/* Tab Navigation */}
       <div className="mb-6 flex gap-2 border-b items-center flex-wrap">
         <button
-          onClick={() => setActiveTab("mission")}
+          type="button"
+          onClick={() => setActiveTab('mission')}
           className={`px-4 py-2 font-medium flex items-center gap-2 border-b-2 transition-colors ${
-            activeTab === "mission"
-              ? "border-blue-600 text-blue-600"
-              : "border-transparent text-slate-600 hover:text-slate-900"
+            activeTab === 'mission'
+              ? 'border-blue-600 text-blue-600'
+              : 'border-transparent text-slate-600 hover:text-slate-900'
           }`}
         >
           <Target className="h-4 w-4" />
           Mission Plan
         </button>
         <button
-          onClick={() => setActiveTab("roadmap")}
+          type="button"
+          onClick={() => setActiveTab('roadmap')}
           className={`px-4 py-2 font-medium flex items-center gap-2 border-b-2 transition-colors ${
-            activeTab === "roadmap"
-              ? "border-blue-600 text-blue-600"
-              : "border-transparent text-slate-600 hover:text-slate-900"
+            activeTab === 'roadmap'
+              ? 'border-blue-600 text-blue-600'
+              : 'border-transparent text-slate-600 hover:text-slate-900'
           }`}
         >
-          <Map className="h-4 w-4" />
+          <MapIcon className="h-4 w-4" />
           Roadmap
         </button>
         <button
-          onClick={() => setActiveTab("finances")}
+          type="button"
+          onClick={() => setActiveTab('finances')}
           className={`px-4 py-2 font-medium flex items-center gap-2 border-b-2 transition-colors ${
-            activeTab === "finances"
-              ? "border-blue-600 text-blue-600"
-              : "border-transparent text-slate-600 hover:text-slate-900"
+            activeTab === 'finances'
+              ? 'border-blue-600 text-blue-600'
+              : 'border-transparent text-slate-600 hover:text-slate-900'
           }`}
         >
           <DollarSign className="h-4 w-4" />
@@ -249,7 +267,7 @@ export default function Home() {
               <WifiOff className="h-4 w-4 text-orange-500" />
             )}
             <span className="hidden sm:inline">
-              {isOnline ? "Online" : "Offline"}
+              {isOnline ? 'Online' : 'Offline'}
             </span>
           </div>
           <Button
@@ -267,23 +285,23 @@ export default function Home() {
               setFocusMode(newFocusMode);
               storage.setFocusMode(newFocusMode);
             }}
-            variant={focusMode ? "default" : "outline"}
+            variant={focusMode ? 'default' : 'outline'}
             size="sm"
           >
-            {focusMode ? "Show All" : "Focus Mode"}
+            {focusMode ? 'Show All' : 'Focus Mode'}
           </Button>
         </div>
       </div>
 
       {/* Mission Plan Tab */}
-      {activeTab === "mission" && (
+      {activeTab === 'mission' && (
         <>
           {!focusMode && <ShipDateCountdown shipDate="2026-02-03" />}
           <KeyMetrics tasks={tasks} />
 
-          {phases.length === 0 && (
+          {phases.length === 0 && user && (
             <div className="mb-6">
-              <SeedDataButton onComplete={loadData} userId={user?.id} />
+              <SeedDataButton onComplete={loadData} userId={user.id} />
             </div>
           )}
 
@@ -300,7 +318,7 @@ export default function Home() {
                 phases={phases}
                 selectedPhaseId={selectedPhaseId}
                 onSelectPhase={setSelectedPhaseId}
-                userId={user?.id}
+                userId={user!.id}
                 onUpdate={loadData}
               />
             </div>
@@ -311,12 +329,12 @@ export default function Home() {
               <div className="flex items-center justify-between mb-4">
                 <h2 className="text-2xl font-semibold">
                   {focusMode
-                    ? "Active Tasks"
+                    ? 'Active Tasks'
                     : selectedPhaseId
-                      ? `Tasks - ${
-                          phases.find((p) => p.id === selectedPhaseId)?.name
-                        }`
-                      : "All Tasks"}
+                    ? `Tasks - ${
+                        phases.find((p) => p.id === selectedPhaseId)?.name
+                      }`
+                    : 'All Tasks'}
                 </h2>
                 <Button onClick={() => setTaskDialogOpen(true)} size="sm">
                   <Plus className="h-4 w-4 mr-1" />
@@ -331,14 +349,14 @@ export default function Home() {
                 }
                 phases={phases}
                 onUpdate={loadData}
-                userId={user?.id}
+                userId={user!.id}
               />
             </div>
 
             <div>
               <div className="flex items-center justify-between mb-4">
                 <h2 className="text-2xl font-semibold">
-                  {focusMode ? "Upcoming Milestones" : "Key Milestones"}
+                  {focusMode ? 'Upcoming Milestones' : 'Key Milestones'}
                 </h2>
                 <Button onClick={() => setMilestoneDialogOpen(true)} size="sm">
                   <Plus className="h-4 w-4 mr-1" />
@@ -353,7 +371,7 @@ export default function Home() {
                 }
                 phases={phases}
                 onUpdate={loadData}
-                userId={user?.id}
+                userId={user!.id}
               />
             </div>
           </div>
@@ -363,14 +381,14 @@ export default function Home() {
             onOpenChange={setTaskDialogOpen}
             onSuccess={loadData}
             phases={phases}
-            userId={user?.id}
+            userId={user!.id}
           />
 
           <PhaseDialog
             open={phaseDialogOpen}
             onOpenChange={setPhaseDialogOpen}
             onSuccess={loadData}
-            userId={user?.id}
+            userId={user!.id}
           />
 
           <MilestoneDialog
@@ -378,13 +396,13 @@ export default function Home() {
             onOpenChange={setMilestoneDialogOpen}
             onSuccess={loadData}
             phases={phases}
-            userId={user?.id}
+            userId={user!.id}
           />
         </>
       )}
 
       {/* Roadmap Tab */}
-      {activeTab === "roadmap" && (
+      {activeTab === 'roadmap' && (
         <RoadmapDashboard
           phases={roadmapPhases}
           stats={getRoadmapStats()}
@@ -393,7 +411,7 @@ export default function Home() {
       )}
 
       {/* Finances Tab */}
-      {activeTab === "finances" && <FinancialDashboard userId={user?.id} />}
+      {activeTab === 'finances' && <FinancialDashboard userId={user!.id} />}
     </main>
   );
 }
