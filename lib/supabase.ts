@@ -1,4 +1,4 @@
-import { createClient } from '@supabase/supabase-js';
+import { createClient } from "@supabase/supabase-js";
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
@@ -12,7 +12,7 @@ export type Phase = {
   description: string | null;
   start_date: string;
   end_date: string;
-  status: 'upcoming' | 'active' | 'complete';
+  status: "upcoming" | "active" | "complete";
   position: number;
   created_at: string;
   user_id: string;
@@ -44,12 +44,12 @@ export type FinancialAccount = {
   id: string;
   user_id: string;
   account_type:
-    | 'checking'
-    | 'savings'
-    | 'roth_ira'
-    | 'brokerage'
-    | 'credit_card'
-    | 'loan';
+    | "checking"
+    | "savings"
+    | "roth_ira"
+    | "brokerage"
+    | "credit_card"
+    | "loan";
   institution: string;
   account_name: string;
   current_balance: number;
@@ -75,7 +75,7 @@ export type FinancialSnapshot = {
 export type Asset = {
   id: string;
   user_id: string;
-  asset_type: 'vehicle' | 'property' | 'other';
+  asset_type: "vehicle" | "property" | "other";
   name: string;
   purchase_price: number;
   current_value: number;

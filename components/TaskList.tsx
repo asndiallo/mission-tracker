@@ -1,16 +1,15 @@
-'use client';
+"use client";
 
-import { Card, CardContent } from '@/components/ui/card';
-import { Pencil, Trash2 } from 'lucide-react';
-import { Phase, Task, supabase } from '@/lib/supabase';
-
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { Checkbox } from '@/components/ui/checkbox';
-import { TaskDialog } from './TaskDialog';
-import { cn } from '@/lib/utils';
-import { formatDate } from '@/lib/utils/dates';
-import { useState } from 'react';
+import { Pencil, Trash2 } from "lucide-react";
+import { useState } from "react";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { Checkbox } from "@/components/ui/checkbox";
+import { type Phase, supabase, type Task } from "@/lib/supabase";
+import { cn } from "@/lib/utils";
+import { formatDate } from "@/lib/utils/dates";
+import { TaskDialog } from "./TaskDialog";
 
 interface Props {
   tasks: Task[];
@@ -25,17 +24,17 @@ export function TaskList({ tasks, phases, onUpdate, userId }: Props) {
 
   async function toggleTask(taskId: string, completed: boolean) {
     await supabase
-      .from('tasks')
+      .from("tasks")
       .update({ completed: !completed })
-      .eq('id', taskId);
+      .eq("id", taskId);
 
     onUpdate();
   }
 
   async function deleteTask(taskId: string) {
-    if (!confirm('Are I sure I want to delete this task?')) return;
+    if (!confirm("Are I sure I want to delete this task?")) return;
 
-    await supabase.from('tasks').delete().eq('id', taskId);
+    await supabase.from("tasks").delete().eq("id", taskId);
 
     onUpdate();
   }
@@ -53,12 +52,12 @@ export function TaskList({ tasks, phases, onUpdate, userId }: Props) {
   const getPhaseColor = (phaseId: string) => {
     const phase = phases.find((p) => p.id === phaseId);
     switch (phase?.status) {
-      case 'complete':
-        return 'bg-green-100 text-green-800';
-      case 'active':
-        return 'bg-blue-100 text-blue-800';
+      case "complete":
+        return "bg-green-100 text-green-800";
+      case "active":
+        return "bg-blue-100 text-blue-800";
       default:
-        return 'bg-slate-100 text-slate-800';
+        return "bg-slate-100 text-slate-800";
     }
   };
 
@@ -82,8 +81,8 @@ export function TaskList({ tasks, phases, onUpdate, userId }: Props) {
             <Card
               key={task.id}
               className={cn(
-                'transition-opacity',
-                task.completed && 'opacity-60'
+                "transition-opacity",
+                task.completed && "opacity-60",
               )}
             >
               <CardContent className="pt-4">
@@ -96,8 +95,8 @@ export function TaskList({ tasks, phases, onUpdate, userId }: Props) {
                   <div className="flex-1 min-w-0">
                     <p
                       className={cn(
-                        'font-medium wrap-break-word',
-                        task.completed && 'line-through text-slate-500'
+                        "font-medium wrap-break-word",
+                        task.completed && "line-through text-slate-500",
                       )}
                     >
                       {task.title}

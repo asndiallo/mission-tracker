@@ -1,16 +1,15 @@
-'use client';
+"use client";
 
-import { Card, CardContent } from '@/components/ui/card';
-import { Milestone, Phase, supabase } from '@/lib/supabase';
-import { Pencil, Trash2 } from 'lucide-react';
-import { daysUntil, formatDate } from '@/lib/utils/dates';
-
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { Checkbox } from '@/components/ui/checkbox';
-import { MilestoneDialog } from './MilestoneDialog';
-import { cn } from '@/lib/utils';
-import { useState } from 'react';
+import { Pencil, Trash2 } from "lucide-react";
+import { useState } from "react";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { Checkbox } from "@/components/ui/checkbox";
+import { type Milestone, type Phase, supabase } from "@/lib/supabase";
+import { cn } from "@/lib/utils";
+import { daysUntil, formatDate } from "@/lib/utils/dates";
+import { MilestoneDialog } from "./MilestoneDialog";
 
 interface Props {
   milestones: Milestone[];
@@ -21,23 +20,23 @@ interface Props {
 
 export function MilestoneList({ milestones, phases, onUpdate, userId }: Props) {
   const [editingMilestone, setEditingMilestone] = useState<Milestone | null>(
-    null
+    null,
   );
   const [dialogOpen, setDialogOpen] = useState(false);
 
   async function toggleMilestone(milestoneId: string, completed: boolean) {
     await supabase
-      .from('milestones')
+      .from("milestones")
       .update({ completed: !completed })
-      .eq('id', milestoneId);
+      .eq("id", milestoneId);
 
     onUpdate();
   }
 
   async function deleteMilestone(milestoneId: string) {
-    if (!confirm('Are you sure you want to delete this milestone?')) return;
+    if (!confirm("Are you sure you want to delete this milestone?")) return;
 
-    await supabase.from('milestones').delete().eq('id', milestoneId);
+    await supabase.from("milestones").delete().eq("id", milestoneId);
     onUpdate();
   }
 
@@ -72,8 +71,8 @@ export function MilestoneList({ milestones, phases, onUpdate, userId }: Props) {
             <Card
               key={milestone.id}
               className={cn(
-                'transition-opacity',
-                milestone.completed && 'opacity-60'
+                "transition-opacity",
+                milestone.completed && "opacity-60",
               )}
             >
               <CardContent className="pt-4">
@@ -88,8 +87,8 @@ export function MilestoneList({ milestones, phases, onUpdate, userId }: Props) {
                   <div className="flex-1 min-w-0">
                     <p
                       className={cn(
-                        'font-medium wrap-break-word',
-                        milestone.completed && 'line-through text-slate-500'
+                        "font-medium wrap-break-word",
+                        milestone.completed && "line-through text-slate-500",
                       )}
                     >
                       {milestone.title}

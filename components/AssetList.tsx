@@ -1,14 +1,13 @@
-'use client';
+"use client";
 
-import { Asset, supabase } from '@/lib/supabase';
-import { Car, Home, Package, Pencil, Trash2 } from 'lucide-react';
-import { Card, CardContent } from '@/components/ui/card';
-
-import { AssetDialog } from './AssetDialog';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { formatDate } from '@/lib/utils/dates';
-import { useState } from 'react';
+import { Car, Home, Package, Pencil, Trash2 } from "lucide-react";
+import { useState } from "react";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { type Asset, supabase } from "@/lib/supabase";
+import { formatDate } from "@/lib/utils/dates";
+import { AssetDialog } from "./AssetDialog";
 
 interface Props {
   assets: Asset[];
@@ -21,9 +20,9 @@ export function AssetList({ assets, onUpdate, userId }: Props) {
   const [dialogOpen, setDialogOpen] = useState(false);
 
   async function deleteAsset(assetId: string) {
-    if (!confirm('Are you sure you want to delete this asset?')) return;
+    if (!confirm("Are you sure you want to delete this asset?")) return;
 
-    await supabase.from('assets').delete().eq('id', assetId);
+    await supabase.from("assets").delete().eq("id", assetId);
     onUpdate();
   }
 
@@ -33,18 +32,18 @@ export function AssetList({ assets, onUpdate, userId }: Props) {
   }
 
   const formatCurrency = (amount: number) => {
-    return new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency: 'USD',
+    return new Intl.NumberFormat("en-US", {
+      style: "currency",
+      currency: "USD",
       minimumFractionDigits: 2,
     }).format(amount);
   };
 
   const getAssetIcon = (type: string) => {
     switch (type) {
-      case 'vehicle':
+      case "vehicle":
         return <Car className="h-5 w-5 text-blue-600" />;
-      case 'property':
+      case "property":
         return <Home className="h-5 w-5 text-green-600" />;
       default:
         return <Package className="h-5 w-5 text-slate-600" />;
@@ -53,9 +52,9 @@ export function AssetList({ assets, onUpdate, userId }: Props) {
 
   const getAssetTypeLabel = (type: string) => {
     const labels: Record<string, string> = {
-      vehicle: 'Vehicle',
-      property: 'Property',
-      other: 'Other',
+      vehicle: "Vehicle",
+      property: "Property",
+      other: "Other",
     };
     return labels[type] || type;
   };
@@ -71,13 +70,16 @@ export function AssetList({ assets, onUpdate, userId }: Props) {
   }
 
   // Group assets by type
-  const groupedAssets = assets.reduce((acc, asset) => {
-    if (!acc[asset.asset_type]) {
-      acc[asset.asset_type] = [];
-    }
-    acc[asset.asset_type].push(asset);
-    return acc;
-  }, {} as Record<string, Asset[]>);
+  const groupedAssets = assets.reduce(
+    (acc, asset) => {
+      if (!acc[asset.asset_type]) {
+        acc[asset.asset_type] = [];
+      }
+      acc[asset.asset_type].push(asset);
+      return acc;
+    },
+    {} as Record<string, Asset[]>,
+  );
 
   return (
     <>
@@ -119,11 +121,11 @@ export function AssetList({ assets, onUpdate, userId }: Props) {
                               variant="outline"
                               className={`text-xs ${
                                 gain >= 0
-                                  ? 'text-green-600 border-green-600'
-                                  : 'text-red-600 border-red-600'
+                                  ? "text-green-600 border-green-600"
+                                  : "text-red-600 border-red-600"
                               }`}
                             >
-                              {gain >= 0 ? '+' : ''}
+                              {gain >= 0 ? "+" : ""}
                               {formatCurrency(gain)} ({gainPercent.toFixed(1)}%)
                             </Badge>
                           </div>

@@ -1,11 +1,10 @@
-'use client';
+"use client";
 
-import { Card, CardContent } from '@/components/ui/card';
-import { daysUntil, formatDate } from '@/lib/utils/dates';
-import { differenceInYears, parseISO } from 'date-fns';
-import { useEffect, useState } from 'react';
-
-import { Progress } from '@/components/ui/progress';
+import { differenceInYears, parseISO } from "date-fns";
+import { useEffect, useState } from "react";
+import { Card, CardContent } from "@/components/ui/card";
+import { Progress } from "@/components/ui/progress";
+import { daysUntil, formatDate } from "@/lib/utils/dates";
 
 interface Props {
   shipDate: string;
@@ -14,7 +13,7 @@ interface Props {
 export function ShipDateCountdown({ shipDate }: Props) {
   const [mounted, setMounted] = useState(false);
   const [days, setDays] = useState(0);
-  const birthDate = '1998-12-06';
+  const birthDate = "1998-12-06";
 
   useEffect(() => {
     setMounted(true);

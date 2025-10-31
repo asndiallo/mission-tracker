@@ -1,5 +1,7 @@
-'use client';
+"use client";
 
+import { useEffect, useState } from "react";
+import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
@@ -7,21 +9,18 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from '@/components/ui/dialog';
-import { FinancialAccount, supabase } from '@/lib/supabase';
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select';
-import { useEffect, useState } from 'react';
-
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
+} from "@/components/ui/select";
+import { Textarea } from "@/components/ui/textarea";
+import { type FinancialAccount, supabase } from "@/lib/supabase";
 
 interface Props {
   open: boolean;
@@ -38,14 +37,14 @@ export function AccountDialog({
   userId,
   editAccount,
 }: Props) {
-  const [accountType, setAccountType] = useState<string>('checking');
-  const [institution, setInstitution] = useState('');
-  const [accountName, setAccountName] = useState('');
-  const [currentBalance, setCurrentBalance] = useState('');
-  const [interestRate, setInterestRate] = useState('');
-  const [creditLimit, setCreditLimit] = useState('');
-  const [monthlyPayment, setMonthlyPayment] = useState('');
-  const [notes, setNotes] = useState('');
+  const [accountType, setAccountType] = useState<string>("checking");
+  const [institution, setInstitution] = useState("");
+  const [accountName, setAccountName] = useState("");
+  const [currentBalance, setCurrentBalance] = useState("");
+  const [interestRate, setInterestRate] = useState("");
+  const [creditLimit, setCreditLimit] = useState("");
+  const [monthlyPayment, setMonthlyPayment] = useState("");
+  const [notes, setNotes] = useState("");
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -54,19 +53,19 @@ export function AccountDialog({
       setInstitution(editAccount.institution);
       setAccountName(editAccount.account_name);
       setCurrentBalance(editAccount.current_balance.toString());
-      setInterestRate(editAccount.interest_rate?.toString() || '');
-      setCreditLimit(editAccount.credit_limit?.toString() || '');
-      setMonthlyPayment(editAccount.monthly_payment?.toString() || '');
-      setNotes(editAccount.notes || '');
+      setInterestRate(editAccount.interest_rate?.toString() || "");
+      setCreditLimit(editAccount.credit_limit?.toString() || "");
+      setMonthlyPayment(editAccount.monthly_payment?.toString() || "");
+      setNotes(editAccount.notes || "");
     } else {
-      setAccountType('checking');
-      setInstitution('');
-      setAccountName('');
-      setCurrentBalance('');
-      setInterestRate('');
-      setCreditLimit('');
-      setMonthlyPayment('');
-      setNotes('');
+      setAccountType("checking");
+      setInstitution("");
+      setAccountName("");
+      setCurrentBalance("");
+      setInterestRate("");
+      setCreditLimit("");
+      setMonthlyPayment("");
+      setNotes("");
     }
   }, [editAccount, open]);
 
@@ -88,13 +87,13 @@ export function AccountDialog({
 
       if (editAccount) {
         const { error } = await supabase
-          .from('financial_accounts')
+          .from("financial_accounts")
           .update(data)
-          .eq('id', editAccount.id);
+          .eq("id", editAccount.id);
 
         if (error) throw error;
       } else {
-        const { error } = await supabase.from('financial_accounts').insert({
+        const { error } = await supabase.from("financial_accounts").insert({
           ...data,
           user_id: userId,
         });
@@ -105,16 +104,16 @@ export function AccountDialog({
       onSuccess();
       onOpenChange(false);
     } catch (error) {
-      console.error('Error saving account:', error);
-      alert('Failed to save account');
+      console.error("Error saving account:", error);
+      alert("Failed to save account");
     } finally {
       setLoading(false);
     }
   }
 
-  const showInterestRate = ['savings', 'loan'].includes(accountType);
-  const showCreditLimit = accountType === 'credit_card';
-  const showMonthlyPayment = ['loan', 'credit_card'].includes(accountType);
+  const showInterestRate = ["savings", "loan"].includes(accountType);
+  const showCreditLimit = accountType === "credit_card";
+  const showMonthlyPayment = ["loan", "credit_card"].includes(accountType);
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -122,12 +121,12 @@ export function AccountDialog({
         <form onSubmit={handleSubmit}>
           <DialogHeader>
             <DialogTitle>
-              {editAccount ? 'Edit Account' : 'Add New Account'}
+              {editAccount ? "Edit Account" : "Add New Account"}
             </DialogTitle>
             <DialogDescription>
               {editAccount
-                ? 'Update your account details.'
-                : 'Add a financial account to track.'}
+                ? "Update your account details."
+                : "Add a financial account to track."}
             </DialogDescription>
           </DialogHeader>
 
@@ -179,10 +178,10 @@ export function AccountDialog({
 
             <div>
               <Label htmlFor="currentBalance">
-                Current Balance *{' '}
-                {accountType === 'credit_card' || accountType === 'loan'
-                  ? '(enter as negative)'
-                  : ''}
+                Current Balance *{" "}
+                {accountType === "credit_card" || accountType === "loan"
+                  ? "(enter as negative)"
+                  : ""}
               </Label>
               <Input
                 id="currentBalance"
@@ -264,7 +263,7 @@ export function AccountDialog({
               Cancel
             </Button>
             <Button type="submit" disabled={loading}>
-              {loading ? 'Saving...' : editAccount ? 'Update' : 'Add Account'}
+              {loading ? "Saving..." : editAccount ? "Update" : "Add Account"}
             </Button>
           </DialogFooter>
         </form>

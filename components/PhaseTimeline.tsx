@@ -1,15 +1,14 @@
-'use client';
+"use client";
 
-import { Card, CardContent } from '@/components/ui/card';
-import { Pencil, Trash2 } from 'lucide-react';
-import { Phase, supabase } from '@/lib/supabase';
-
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { PhaseDialog } from './PhaseDialog';
-import { cn } from '@/lib/utils';
-import { formatDate } from '@/lib/utils/dates';
-import { useState } from 'react';
+import { Pencil, Trash2 } from "lucide-react";
+import { useState } from "react";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { type Phase, supabase } from "@/lib/supabase";
+import { cn } from "@/lib/utils";
+import { formatDate } from "@/lib/utils/dates";
+import { PhaseDialog } from "./PhaseDialog";
 
 interface Props {
   phases: Phase[];
@@ -31,20 +30,20 @@ export function PhaseTimeline({
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'complete':
-        return 'bg-green-500';
-      case 'active':
-        return 'bg-blue-500';
+      case "complete":
+        return "bg-green-500";
+      case "active":
+        return "bg-blue-500";
       default:
-        return 'bg-slate-300';
+        return "bg-slate-300";
     }
   };
 
   const getStatusBadge = (status: string) => {
     switch (status) {
-      case 'complete':
+      case "complete":
         return <Badge className="bg-green-600">Complete</Badge>;
-      case 'active':
+      case "active":
         return <Badge className="bg-blue-600">Active</Badge>;
       default:
         return <Badge variant="secondary">Upcoming</Badge>;
@@ -53,11 +52,11 @@ export function PhaseTimeline({
 
   async function deletePhase(phaseId: string) {
     if (
-      !confirm('Are you sure? This will also delete all tasks in this phase.')
+      !confirm("Are you sure? This will also delete all tasks in this phase.")
     )
       return;
 
-    await supabase.from('phases').delete().eq('id', phaseId);
+    await supabase.from("phases").delete().eq("id", phaseId);
     onUpdate();
   }
 
@@ -74,8 +73,8 @@ export function PhaseTimeline({
           <Card
             key={phase.id}
             className={cn(
-              'cursor-pointer transition-all hover:shadow-md',
-              selectedPhaseId === phase.id && 'ring-2 ring-blue-500'
+              "cursor-pointer transition-all hover:shadow-md",
+              selectedPhaseId === phase.id && "ring-2 ring-blue-500",
             )}
             onClick={() =>
               onSelectPhase(selectedPhaseId === phase.id ? null : phase.id)
@@ -86,8 +85,8 @@ export function PhaseTimeline({
                 {/* Phase Number */}
                 <div
                   className={cn(
-                    'w-12 h-12 rounded-full flex items-center justify-center text-white font-bold text-lg shrink-0',
-                    getStatusColor(phase.status)
+                    "w-12 h-12 rounded-full flex items-center justify-center text-white font-bold text-lg shrink-0",
+                    getStatusColor(phase.status),
                   )}
                 >
                   {index}
@@ -103,7 +102,7 @@ export function PhaseTimeline({
                     <p className="text-slate-600 mb-2">{phase.description}</p>
                   )}
                   <p className="text-sm text-slate-500">
-                    {formatDate(phase.start_date)} →{' '}
+                    {formatDate(phase.start_date)} →{" "}
                     {formatDate(phase.end_date)}
                   </p>
                 </div>

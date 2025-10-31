@@ -1,5 +1,7 @@
-'use client';
+"use client";
 
+import { useEffect, useState } from "react";
+import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
@@ -7,21 +9,18 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from '@/components/ui/dialog';
-import { Phase, supabase } from '@/lib/supabase';
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select';
-import { useEffect, useState } from 'react';
-
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
+} from "@/components/ui/select";
+import { Textarea } from "@/components/ui/textarea";
+import { type Phase, supabase } from "@/lib/supabase";
 
 interface Props {
   open: boolean;
@@ -38,28 +37,28 @@ export function PhaseDialog({
   userId,
   editPhase,
 }: Props) {
-  const [name, setName] = useState('');
-  const [description, setDescription] = useState('');
-  const [startDate, setStartDate] = useState('');
-  const [endDate, setEndDate] = useState('');
-  const [status, setStatus] = useState<'upcoming' | 'active' | 'complete'>(
-    'upcoming'
+  const [name, setName] = useState("");
+  const [description, setDescription] = useState("");
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
+  const [status, setStatus] = useState<"upcoming" | "active" | "complete">(
+    "upcoming",
   );
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (editPhase) {
       setName(editPhase.name);
-      setDescription(editPhase.description || '');
+      setDescription(editPhase.description || "");
       setStartDate(editPhase.start_date);
       setEndDate(editPhase.end_date);
       setStatus(editPhase.status);
     } else {
-      setName('');
-      setDescription('');
-      setStartDate('');
-      setEndDate('');
-      setStatus('upcoming');
+      setName("");
+      setDescription("");
+      setStartDate("");
+      setEndDate("");
+      setStatus("upcoming");
     }
   }, [editPhase, open]);
 
@@ -70,7 +69,7 @@ export function PhaseDialog({
     try {
       if (editPhase) {
         const { error } = await supabase
-          .from('phases')
+          .from("phases")
           .update({
             name,
             description: description || null,
@@ -78,20 +77,20 @@ export function PhaseDialog({
             end_date: endDate,
             status,
           })
-          .eq('id', editPhase.id);
+          .eq("id", editPhase.id);
 
         if (error) throw error;
       } else {
         // Get max position
         const { data: existingPhases } = await supabase
-          .from('phases')
-          .select('position')
-          .order('position', { ascending: false })
+          .from("phases")
+          .select("position")
+          .order("position", { ascending: false })
           .limit(1);
 
         const maxPosition = existingPhases?.[0]?.position ?? -1;
 
-        const { error } = await supabase.from('phases').insert({
+        const { error } = await supabase.from("phases").insert({
           name,
           description: description || null,
           start_date: startDate,
@@ -107,8 +106,8 @@ export function PhaseDialog({
       onSuccess();
       onOpenChange(false);
     } catch (error) {
-      console.error('Error saving phase:', error);
-      alert('Failed to save phase');
+      console.error("Error saving phase:", error);
+      alert("Failed to save phase");
     } finally {
       setLoading(false);
     }
@@ -120,12 +119,12 @@ export function PhaseDialog({
         <form onSubmit={handleSubmit}>
           <DialogHeader>
             <DialogTitle>
-              {editPhase ? 'Edit Phase' : 'Create New Phase'}
+              {editPhase ? "Edit Phase" : "Create New Phase"}
             </DialogTitle>
             <DialogDescription>
               {editPhase
-                ? 'Update the phase details below.'
-                : 'Add a new phase to your mission plan.'}
+                ? "Update the phase details below."
+                : "Add a new phase to your mission plan."}
             </DialogDescription>
           </DialogHeader>
 
@@ -210,10 +209,10 @@ export function PhaseDialog({
             </Button>
             <Button type="submit" disabled={loading}>
               {loading
-                ? 'Saving...'
+                ? "Saving..."
                 : editPhase
-                ? 'Update Phase'
-                : 'Create Phase'}
+                  ? "Update Phase"
+                  : "Create Phase"}
             </Button>
           </DialogFooter>
         </form>

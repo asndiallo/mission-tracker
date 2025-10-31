@@ -1,6 +1,5 @@
-'use client';
+"use client";
 
-import { Card, CardContent } from '@/components/ui/card';
 import {
   CreditCard,
   DollarSign,
@@ -8,13 +7,13 @@ import {
   Trash2,
   TrendingUp,
   Wallet,
-} from 'lucide-react';
-import { FinancialAccount, supabase } from '@/lib/supabase';
-
-import { AccountDialog } from './AccountDialog';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { useState } from 'react';
+} from "lucide-react";
+import { useState } from "react";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { type FinancialAccount, supabase } from "@/lib/supabase";
+import { AccountDialog } from "./AccountDialog";
 
 interface Props {
   accounts: FinancialAccount[];
@@ -24,14 +23,14 @@ interface Props {
 
 export function AccountList({ accounts, onUpdate, userId }: Props) {
   const [editingAccount, setEditingAccount] = useState<FinancialAccount | null>(
-    null
+    null,
   );
   const [dialogOpen, setDialogOpen] = useState(false);
 
   async function deleteAccount(accountId: string) {
-    if (!confirm('Are you sure you want to delete this account?')) return;
+    if (!confirm("Are you sure you want to delete this account?")) return;
 
-    await supabase.from('financial_accounts').delete().eq('id', accountId);
+    await supabase.from("financial_accounts").delete().eq("id", accountId);
     onUpdate();
   }
 
@@ -41,24 +40,24 @@ export function AccountList({ accounts, onUpdate, userId }: Props) {
   }
 
   const formatCurrency = (amount: number) => {
-    return new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency: 'USD',
+    return new Intl.NumberFormat("en-US", {
+      style: "currency",
+      currency: "USD",
       minimumFractionDigits: 2,
     }).format(amount);
   };
 
   const getAccountIcon = (type: string) => {
     switch (type) {
-      case 'checking':
-      case 'savings':
+      case "checking":
+      case "savings":
         return <Wallet className="h-5 w-5 text-blue-600" />;
-      case 'roth_ira':
-      case 'brokerage':
+      case "roth_ira":
+      case "brokerage":
         return <TrendingUp className="h-5 w-5 text-green-600" />;
-      case 'credit_card':
+      case "credit_card":
         return <CreditCard className="h-5 w-5 text-purple-600" />;
-      case 'loan':
+      case "loan":
         return <DollarSign className="h-5 w-5 text-red-600" />;
       default:
         return <Wallet className="h-5 w-5 text-slate-600" />;
@@ -67,12 +66,12 @@ export function AccountList({ accounts, onUpdate, userId }: Props) {
 
   const getAccountTypeLabel = (type: string) => {
     const labels: Record<string, string> = {
-      checking: 'Checking',
-      savings: 'Savings',
-      roth_ira: 'Roth IRA',
-      brokerage: 'Brokerage',
-      credit_card: 'Credit Card',
-      loan: 'Loan',
+      checking: "Checking",
+      savings: "Savings",
+      roth_ira: "Roth IRA",
+      brokerage: "Brokerage",
+      credit_card: "Credit Card",
+      loan: "Loan",
     };
     return labels[type] || type;
   };
@@ -88,13 +87,16 @@ export function AccountList({ accounts, onUpdate, userId }: Props) {
   }
 
   // Group accounts by type
-  const groupedAccounts = accounts.reduce((acc, account) => {
-    if (!acc[account.account_type]) {
-      acc[account.account_type] = [];
-    }
-    acc[account.account_type].push(account);
-    return acc;
-  }, {} as Record<string, FinancialAccount[]>);
+  const groupedAccounts = accounts.reduce(
+    (acc, account) => {
+      if (!acc[account.account_type]) {
+        acc[account.account_type] = [];
+      }
+      acc[account.account_type].push(account);
+      return acc;
+    },
+    {} as Record<string, FinancialAccount[]>,
+  );
 
   return (
     <>
@@ -119,8 +121,8 @@ export function AccountList({ accounts, onUpdate, userId }: Props) {
                           <span
                             className={`text-lg font-bold ${
                               account.current_balance >= 0
-                                ? 'text-green-600'
-                                : 'text-red-600'
+                                ? "text-green-600"
+                                : "text-red-600"
                             }`}
                           >
                             {formatCurrency(account.current_balance)}

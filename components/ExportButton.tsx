@@ -1,18 +1,17 @@
-'use client';
+"use client";
 
+import { Download } from "lucide-react";
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { generateMissionPlanPDF } from "@/lib/pdf-export";
 import {
-  Asset,
-  FinancialAccount,
-  Milestone,
-  Phase,
-  Task,
+  type Asset,
+  type FinancialAccount,
+  type Milestone,
+  type Phase,
   supabase,
-} from '@/lib/supabase';
-
-import { Button } from '@/components/ui/button';
-import { Download } from 'lucide-react';
-import { generateMissionPlanPDF } from '@/lib/pdf-export';
-import { useState } from 'react';
+  type Task,
+} from "@/lib/supabase";
 
 interface Props {
   phases: Phase[];
@@ -38,8 +37,8 @@ export function ExportButton({
 
       if (includeFinances) {
         const [accountsRes, assetsRes] = await Promise.all([
-          supabase.from('financial_accounts').select('*'),
-          supabase.from('assets').select('*'),
+          supabase.from("financial_accounts").select("*"),
+          supabase.from("assets").select("*"),
         ]);
 
         accounts = accountsRes.data || undefined;
@@ -48,8 +47,8 @@ export function ExportButton({
 
       await generateMissionPlanPDF(phases, tasks, milestones, accounts, assets);
     } catch (error) {
-      console.error('Error generating PDF:', error);
-      alert('Failed to generate PDF');
+      console.error("Error generating PDF:", error);
+      alert("Failed to generate PDF");
     } finally {
       setLoading(false);
     }
@@ -63,7 +62,7 @@ export function ExportButton({
       size="sm"
     >
       <Download className="h-4 w-4 mr-1" />
-      {loading ? 'Generating...' : 'Export to PDF'}
+      {loading ? "Generating..." : "Export to PDF"}
     </Button>
   );
 }

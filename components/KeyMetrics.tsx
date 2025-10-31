@@ -1,9 +1,9 @@
-'use client';
+"use client";
 
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
-import { Progress } from '@/components/ui/progress';
-import { Task } from '@/lib/supabase';
+import { Progress } from "@/components/ui/progress";
+import type { Task } from "@/lib/supabase";
 
 interface Props {
   tasks: Task[];
@@ -17,10 +17,10 @@ export function KeyMetrics({ tasks }: Props) {
 
   // Key milestones
   const keyAchievements = [
-    { name: 'Prerequisites Complete', target: 31, current: 0, unit: 'credits' },
-    { name: 'Properties Owned', target: 4, current: 0, unit: 'properties' },
-    { name: 'Years of Service', target: 9, current: 0, unit: 'years' },
-    { name: 'Net Worth', target: 500000, current: 0, unit: 'USD' },
+    { name: "Prerequisites Complete", target: 31, current: 0, unit: "credits" },
+    { name: "Properties Owned", target: 4, current: 0, unit: "properties" },
+    { name: "Years of Service", target: 9, current: 0, unit: "years" },
+    { name: "Net Worth", target: 500000, current: 0, unit: "USD" },
   ];
 
   return (

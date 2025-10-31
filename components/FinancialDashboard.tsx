@@ -1,6 +1,5 @@
-'use client';
+"use client";
 
-import { Asset, FinancialAccount, supabase } from '@/lib/supabase';
 import {
   Car,
   CreditCard,
@@ -9,16 +8,16 @@ import {
   Plus,
   TrendingDown,
   TrendingUp,
-} from 'lucide-react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { useEffect, useState } from 'react';
-
-import { AccountDialog } from './AccountDialog';
-import { AccountList } from './AccountList';
-import { AssetDialog } from './AssetDialog';
-import { AssetList } from './AssetList';
-import { Button } from '@/components/ui/button';
-import { SeedFinancialDataButton } from './SeedFinancialDataButton';
+} from "lucide-react";
+import { useEffect, useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { type Asset, type FinancialAccount, supabase } from "@/lib/supabase";
+import { AccountDialog } from "./AccountDialog";
+import { AccountList } from "./AccountList";
+import { AssetDialog } from "./AssetDialog";
+import { AssetList } from "./AssetList";
+import { SeedFinancialDataButton } from "./SeedFinancialDataButton";
 
 interface Props {
   userId: string;
@@ -39,8 +38,8 @@ export function FinancialDashboard({ userId }: Props) {
     setLoading(true);
 
     const [accountsRes, assetsRes] = await Promise.all([
-      supabase.from('financial_accounts').select('*').order('account_type'),
-      supabase.from('assets').select('*').order('asset_type'),
+      supabase.from("financial_accounts").select("*").order("account_type"),
+      supabase.from("assets").select("*").order("asset_type"),
     ]);
 
     if (accountsRes.data) setAccounts(accountsRes.data);
@@ -51,28 +50,28 @@ export function FinancialDashboard({ userId }: Props) {
 
   // Calculate totals
   const checking = accounts
-    .filter((a) => a.account_type === 'checking')
+    .filter((a) => a.account_type === "checking")
     .reduce((sum, a) => sum + Number(a.current_balance), 0);
 
   const savings = accounts
-    .filter((a) => a.account_type === 'savings')
+    .filter((a) => a.account_type === "savings")
     .reduce((sum, a) => sum + Number(a.current_balance), 0);
 
   const investments = accounts
-    .filter((a) => ['roth_ira', 'brokerage'].includes(a.account_type))
+    .filter((a) => ["roth_ira", "brokerage"].includes(a.account_type))
     .reduce((sum, a) => sum + Number(a.current_balance), 0);
 
   const creditCardDebt = accounts
-    .filter((a) => a.account_type === 'credit_card')
+    .filter((a) => a.account_type === "credit_card")
     .reduce((sum, a) => sum + Math.abs(Number(a.current_balance)), 0);
 
   const loans = accounts
-    .filter((a) => a.account_type === 'loan')
+    .filter((a) => a.account_type === "loan")
     .reduce((sum, a) => sum + Math.abs(Number(a.current_balance)), 0);
 
   const assetValue = assets.reduce(
     (sum, a) => sum + Number(a.current_value),
-    0
+    0,
   );
 
   const totalAssets = checking + savings + investments + assetValue;
@@ -80,9 +79,9 @@ export function FinancialDashboard({ userId }: Props) {
   const netWorth = totalAssets - totalLiabilities;
 
   const formatCurrency = (amount: number) => {
-    return new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency: 'USD',
+    return new Intl.NumberFormat("en-US", {
+      style: "currency",
+      currency: "USD",
       minimumFractionDigits: 2,
     }).format(amount);
   };
@@ -113,7 +112,7 @@ export function FinancialDashboard({ userId }: Props) {
           <CardContent>
             <div
               className={`text-2xl font-bold ${
-                netWorth >= 0 ? 'text-green-600' : 'text-red-600'
+                netWorth >= 0 ? "text-green-600" : "text-red-600"
               }`}
             >
               {formatCurrency(netWorth)}
@@ -204,8 +203,8 @@ export function FinancialDashboard({ userId }: Props) {
               <span className="font-semibold">
                 {formatCurrency(
                   accounts
-                    .filter((a) => a.account_type === 'roth_ira')
-                    .reduce((sum, a) => sum + Number(a.current_balance), 0)
+                    .filter((a) => a.account_type === "roth_ira")
+                    .reduce((sum, a) => sum + Number(a.current_balance), 0),
                 )}
               </span>
             </div>
@@ -214,8 +213,8 @@ export function FinancialDashboard({ userId }: Props) {
               <span className="font-semibold">
                 {formatCurrency(
                   accounts
-                    .filter((a) => a.account_type === 'brokerage')
-                    .reduce((sum, a) => sum + Number(a.current_balance), 0)
+                    .filter((a) => a.account_type === "brokerage")
+                    .reduce((sum, a) => sum + Number(a.current_balance), 0),
                 )}
               </span>
             </div>

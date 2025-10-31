@@ -1,5 +1,7 @@
-'use client';
+"use client";
 
+import { useEffect, useState } from "react";
+import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
@@ -7,20 +9,17 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from '@/components/ui/dialog';
-import { Milestone, Phase, supabase } from '@/lib/supabase';
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select';
-import { useEffect, useState } from 'react';
-
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
+} from "@/components/ui/select";
+import { type Milestone, type Phase, supabase } from "@/lib/supabase";
 
 interface Props {
   open: boolean;
@@ -39,20 +38,20 @@ export function MilestoneDialog({
   userId,
   editMilestone,
 }: Props) {
-  const [title, setTitle] = useState('');
-  const [date, setDate] = useState('');
-  const [phaseId, setPhaseId] = useState<string>('none'); // Changed from '' to 'none'
+  const [title, setTitle] = useState("");
+  const [date, setDate] = useState("");
+  const [phaseId, setPhaseId] = useState<string>("none"); // Changed from '' to 'none'
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (editMilestone) {
       setTitle(editMilestone.title);
       setDate(editMilestone.date);
-      setPhaseId(editMilestone.phase_id || 'none'); // Changed from '' to 'none'
+      setPhaseId(editMilestone.phase_id || "none"); // Changed from '' to 'none'
     } else {
-      setTitle('');
-      setDate('');
-      setPhaseId('none'); // Changed from '' to 'none'
+      setTitle("");
+      setDate("");
+      setPhaseId("none"); // Changed from '' to 'none'
     }
   }, [editMilestone, open]);
 
@@ -64,19 +63,19 @@ export function MilestoneDialog({
       const data = {
         title,
         date,
-        phase_id: phaseId === 'none' ? null : phaseId, // Convert 'none' back to null
+        phase_id: phaseId === "none" ? null : phaseId, // Convert 'none' back to null
         completed: editMilestone?.completed || false,
       };
 
       if (editMilestone) {
         const { error } = await supabase
-          .from('milestones')
+          .from("milestones")
           .update(data)
-          .eq('id', editMilestone.id);
+          .eq("id", editMilestone.id);
 
         if (error) throw error;
       } else {
-        const { error } = await supabase.from('milestones').insert({
+        const { error } = await supabase.from("milestones").insert({
           ...data,
           user_id: userId,
         });
@@ -87,8 +86,8 @@ export function MilestoneDialog({
       onSuccess();
       onOpenChange(false);
     } catch (error) {
-      console.error('Error saving milestone:', error);
-      alert('Failed to save milestone');
+      console.error("Error saving milestone:", error);
+      alert("Failed to save milestone");
     } finally {
       setLoading(false);
     }
@@ -100,12 +99,12 @@ export function MilestoneDialog({
         <form onSubmit={handleSubmit}>
           <DialogHeader>
             <DialogTitle>
-              {editMilestone ? 'Edit Milestone' : 'Create New Milestone'}
+              {editMilestone ? "Edit Milestone" : "Create New Milestone"}
             </DialogTitle>
             <DialogDescription>
               {editMilestone
-                ? 'Update the milestone details below.'
-                : 'Add a key milestone to your mission plan.'}
+                ? "Update the milestone details below."
+                : "Add a key milestone to your mission plan."}
             </DialogDescription>
           </DialogHeader>
 
@@ -169,10 +168,10 @@ export function MilestoneDialog({
             </Button>
             <Button type="submit" disabled={loading}>
               {loading
-                ? 'Saving...'
+                ? "Saving..."
                 : editMilestone
-                ? 'Update Milestone'
-                : 'Create Milestone'}
+                  ? "Update Milestone"
+                  : "Create Milestone"}
             </Button>
           </DialogFooter>
         </form>

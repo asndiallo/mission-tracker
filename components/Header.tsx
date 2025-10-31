@@ -1,16 +1,21 @@
-'use client';
+"use client";
 
-import { Milestone, Phase, Task, supabase } from '@/lib/supabase';
+import { ExportButton } from "@/components/ExportButton";
 
-import { Button } from '@/components/ui/button';
-import { ExportButton } from '@/components/ExportButton';
+import { Button } from "@/components/ui/button";
+import {
+  type Milestone,
+  type Phase,
+  supabase,
+  type Task,
+} from "@/lib/supabase";
 
 interface Props {
   onSignOut: () => void;
   phases: Phase[];
   tasks: Task[];
   milestones: Milestone[];
-  activeTab: 'mission' | 'finances';
+  activeTab: "mission" | "finances";
   user: any;
 }
 
@@ -42,7 +47,7 @@ export function Header({
           phases={phases}
           tasks={tasks}
           milestones={milestones}
-          includeFinances={activeTab === 'finances'}
+          includeFinances={activeTab === "finances"}
         />
         {user?.email && (
           <span className="text-sm text-slate-600">{user.email}</span>

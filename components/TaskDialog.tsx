@@ -1,5 +1,7 @@
-'use client';
+"use client";
 
+import { useEffect, useState } from "react";
+import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
@@ -7,21 +9,18 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from '@/components/ui/dialog';
-import { Phase, Task, supabase } from '@/lib/supabase';
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select';
-import { useEffect, useState } from 'react';
-
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
+} from "@/components/ui/select";
+import { Textarea } from "@/components/ui/textarea";
+import { type Phase, supabase, type Task } from "@/lib/supabase";
 
 interface Props {
   open: boolean;
@@ -40,25 +39,25 @@ export function TaskDialog({
   userId,
   editTask,
 }: Props) {
-  const [title, setTitle] = useState('');
-  const [notes, setNotes] = useState('');
-  const [phaseId, setPhaseId] = useState('');
-  const [dueDate, setDueDate] = useState('');
+  const [title, setTitle] = useState("");
+  const [notes, setNotes] = useState("");
+  const [phaseId, setPhaseId] = useState("");
+  const [dueDate, setDueDate] = useState("");
   const [loading, setLoading] = useState(false);
 
   // Populate form when editing
   useEffect(() => {
     if (editTask) {
       setTitle(editTask.title);
-      setNotes(editTask.notes || '');
+      setNotes(editTask.notes || "");
       setPhaseId(editTask.phase_id);
-      setDueDate(editTask.due_date || '');
+      setDueDate(editTask.due_date || "");
     } else {
       // Reset form when creating new
-      setTitle('');
-      setNotes('');
-      setPhaseId(phases[0]?.id || '');
-      setDueDate('');
+      setTitle("");
+      setNotes("");
+      setPhaseId(phases[0]?.id || "");
+      setDueDate("");
     }
   }, [editTask, phases, open]);
 
@@ -70,29 +69,29 @@ export function TaskDialog({
       if (editTask) {
         // Update existing task
         const { error } = await supabase
-          .from('tasks')
+          .from("tasks")
           .update({
             title,
             notes: notes || null,
             phase_id: phaseId,
             due_date: dueDate || null,
           })
-          .eq('id', editTask.id);
+          .eq("id", editTask.id);
 
         if (error) throw error;
       } else {
         // Create new task
         // Get max position for this phase
         const { data: existingTasks } = await supabase
-          .from('tasks')
-          .select('position')
-          .eq('phase_id', phaseId)
-          .order('position', { ascending: false })
+          .from("tasks")
+          .select("position")
+          .eq("phase_id", phaseId)
+          .order("position", { ascending: false })
           .limit(1);
 
         const maxPosition = existingTasks?.[0]?.position ?? -1;
 
-        const { error } = await supabase.from('tasks').insert({
+        const { error } = await supabase.from("tasks").insert({
           title,
           notes: notes || null,
           phase_id: phaseId,
@@ -108,8 +107,8 @@ export function TaskDialog({
       onSuccess();
       onOpenChange(false);
     } catch (error) {
-      console.error('Error saving task:', error);
-      alert('Failed to save task');
+      console.error("Error saving task:", error);
+      alert("Failed to save task");
     } finally {
       setLoading(false);
     }
@@ -121,12 +120,12 @@ export function TaskDialog({
         <form onSubmit={handleSubmit}>
           <DialogHeader>
             <DialogTitle>
-              {editTask ? 'Edit Task' : 'Create New Task'}
+              {editTask ? "Edit Task" : "Create New Task"}
             </DialogTitle>
             <DialogDescription>
               {editTask
-                ? 'Update the task details below.'
-                : 'Add a new task to my mission plan.'}
+                ? "Update the task details below."
+                : "Add a new task to my mission plan."}
             </DialogDescription>
           </DialogHeader>
 
@@ -197,7 +196,7 @@ export function TaskDialog({
               Cancel
             </Button>
             <Button type="submit" disabled={loading}>
-              {loading ? 'Saving...' : editTask ? 'Update Task' : 'Create Task'}
+              {loading ? "Saving..." : editTask ? "Update Task" : "Create Task"}
             </Button>
           </DialogFooter>
         </form>

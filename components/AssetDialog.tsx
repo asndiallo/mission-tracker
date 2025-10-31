@@ -1,6 +1,7 @@
-'use client';
+"use client";
 
-import { Asset, supabase } from '@/lib/supabase';
+import { useEffect, useState } from "react";
+import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
@@ -8,20 +9,18 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from '@/components/ui/dialog';
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select';
-import { useEffect, useState } from 'react';
-
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
+} from "@/components/ui/select";
+import { Textarea } from "@/components/ui/textarea";
+import { type Asset, supabase } from "@/lib/supabase";
 
 interface Props {
   open: boolean;
@@ -38,12 +37,12 @@ export function AssetDialog({
   userId,
   editAsset,
 }: Props) {
-  const [assetType, setAssetType] = useState<string>('vehicle');
-  const [name, setName] = useState('');
-  const [purchasePrice, setPurchasePrice] = useState('');
-  const [currentValue, setCurrentValue] = useState('');
-  const [purchaseDate, setPurchaseDate] = useState('');
-  const [notes, setNotes] = useState('');
+  const [assetType, setAssetType] = useState<string>("vehicle");
+  const [name, setName] = useState("");
+  const [purchasePrice, setPurchasePrice] = useState("");
+  const [currentValue, setCurrentValue] = useState("");
+  const [purchaseDate, setPurchaseDate] = useState("");
+  const [notes, setNotes] = useState("");
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -52,15 +51,15 @@ export function AssetDialog({
       setName(editAsset.name);
       setPurchasePrice(editAsset.purchase_price.toString());
       setCurrentValue(editAsset.current_value.toString());
-      setPurchaseDate(editAsset.purchase_date || '');
-      setNotes(editAsset.notes || '');
+      setPurchaseDate(editAsset.purchase_date || "");
+      setNotes(editAsset.notes || "");
     } else {
-      setAssetType('vehicle');
-      setName('');
-      setPurchasePrice('');
-      setCurrentValue('');
-      setPurchaseDate('');
-      setNotes('');
+      setAssetType("vehicle");
+      setName("");
+      setPurchasePrice("");
+      setCurrentValue("");
+      setPurchaseDate("");
+      setNotes("");
     }
   }, [editAsset, open]);
 
@@ -80,13 +79,13 @@ export function AssetDialog({
 
       if (editAsset) {
         const { error } = await supabase
-          .from('assets')
+          .from("assets")
           .update(data)
-          .eq('id', editAsset.id);
+          .eq("id", editAsset.id);
 
         if (error) throw error;
       } else {
-        const { error } = await supabase.from('assets').insert({
+        const { error } = await supabase.from("assets").insert({
           ...data,
           user_id: userId,
         });
@@ -97,8 +96,8 @@ export function AssetDialog({
       onSuccess();
       onOpenChange(false);
     } catch (error) {
-      console.error('Error saving asset:', error);
-      alert('Failed to save asset');
+      console.error("Error saving asset:", error);
+      alert("Failed to save asset");
     } finally {
       setLoading(false);
     }
@@ -110,12 +109,12 @@ export function AssetDialog({
         <form onSubmit={handleSubmit}>
           <DialogHeader>
             <DialogTitle>
-              {editAsset ? 'Edit Asset' : 'Add New Asset'}
+              {editAsset ? "Edit Asset" : "Add New Asset"}
             </DialogTitle>
             <DialogDescription>
               {editAsset
-                ? 'Update your asset details.'
-                : 'Add an asset to track (vehicles, properties, etc.).'}
+                ? "Update your asset details."
+                : "Add an asset to track (vehicles, properties, etc.)."}
             </DialogDescription>
           </DialogHeader>
 
@@ -214,7 +213,7 @@ export function AssetDialog({
               Cancel
             </Button>
             <Button type="submit" disabled={loading}>
-              {loading ? 'Saving...' : editAsset ? 'Update' : 'Add Asset'}
+              {loading ? "Saving..." : editAsset ? "Update" : "Add Asset"}
             </Button>
           </DialogFooter>
         </form>
