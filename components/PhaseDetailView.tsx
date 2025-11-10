@@ -44,7 +44,8 @@ export interface DecisionBranch {
   recommendation?: string;
 }
 
-export interface DetailedPhase extends Omit<Phase, 'position' | 'created_at' | 'user_id'> {
+export interface DetailedPhase
+  extends Omit<Phase, "position" | "created_at" | "user_id"> {
   position?: number;
   created_at?: string;
   user_id?: string;

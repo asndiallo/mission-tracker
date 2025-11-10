@@ -1,22 +1,22 @@
-'use client';
+"use client";
 
-import { Calendar, CheckCircle2, ChevronRight, Target, X } from 'lucide-react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import type { Milestone, Phase, Task } from '@/lib/supabase';
-import { useCallback, useEffect, useState } from 'react';
+import { Calendar, CheckCircle2, ChevronRight, Target, X } from "lucide-react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import type { Milestone, Phase, Task } from "@/lib/supabase";
+import { useCallback, useEffect, useState } from "react";
 
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { formatDate } from '@/lib/utils/dates';
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { formatDate } from "@/lib/utils/dates";
 
 interface NextAction {
-  type: 'task' | 'milestone';
+  type: "task" | "milestone";
   id: string;
   title: string;
   description?: string;
   dueDate?: string;
   phaseName?: string;
-  priority: 'urgent' | 'high' | 'normal';
+  priority: "urgent" | "high" | "normal";
   daysUntilDue?: number;
 }
 
@@ -52,7 +52,7 @@ export function TodayNextStep({
     (
       tasks: Task[],
       milestones: Milestone[],
-      phases: Phase[]
+      phases: Phase[],
     ): NextAction | null => {
       const today = new Date();
       today.setHours(0, 0, 0, 0);
@@ -68,7 +68,7 @@ export function TodayNextStep({
       const scoredTasks = incompleteTasks.map((task) => {
         let score = 0;
         let daysUntilDue: number | undefined;
-        let priority: 'urgent' | 'high' | 'normal' = 'normal';
+        let priority: "urgent" | "high" | "normal" = "normal";
 
         if (task.due_date) {
           const dueDate = new Date(task.due_date);
@@ -80,17 +80,17 @@ export function TodayNextStep({
           // Urgent: overdue or due today
           if (diffDays <= 0) {
             score = 1000 - diffDays; // Higher score for more overdue
-            priority = 'urgent';
+            priority = "urgent";
           }
           // High: due within 3 days
           else if (diffDays <= 3) {
             score = 500 + (3 - diffDays) * 100;
-            priority = 'high';
+            priority = "high";
           }
           // Normal: due within a week
           else if (diffDays <= 7) {
             score = 300 + (7 - diffDays) * 10;
-            priority = 'high';
+            priority = "high";
           }
           // Future tasks
           else {
@@ -102,7 +102,7 @@ export function TodayNextStep({
         }
 
         return {
-          type: 'task' as const,
+          type: "task" as const,
           id: task.id,
           title: task.title,
           description: task.notes || undefined,
@@ -122,24 +122,24 @@ export function TodayNextStep({
         const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
 
         let score = 0;
-        let priority: 'urgent' | 'high' | 'normal' = 'normal';
+        let priority: "urgent" | "high" | "normal" = "normal";
 
         // Milestones are important - weight them higher
         if (diffDays <= 0) {
           score = 1100 - diffDays;
-          priority = 'urgent';
+          priority = "urgent";
         } else if (diffDays <= 7) {
           score = 600 + (7 - diffDays) * 50;
-          priority = 'high';
+          priority = "high";
         } else if (diffDays <= 14) {
           score = 400 + (14 - diffDays) * 10;
-          priority = 'high';
+          priority = "high";
         } else {
           score = 200 - Math.min(diffDays, 100);
         }
 
         return {
-          type: 'milestone' as const,
+          type: "milestone" as const,
           id: milestone.id,
           title: milestone.title,
           dueDate: milestone.date,
@@ -154,18 +154,18 @@ export function TodayNextStep({
 
       // Combine and sort by score
       const allActions = [...scoredTasks, ...scoredMilestones].sort(
-        (a, b) => b.score - a.score
+        (a, b) => b.score - a.score,
       );
 
       return allActions.length > 0 ? allActions[0] : null;
     },
-    []
+    [],
   );
 
   const handleComplete = () => {
     if (!nextAction) return;
 
-    if (nextAction.type === 'task') {
+    if (nextAction.type === "task") {
       onTaskComplete(nextAction.id);
     } else {
       onMilestoneComplete(nextAction.id);
@@ -210,21 +210,21 @@ export function TodayNextStep({
                     <div className="flex items-center gap-2 flex-wrap">
                       <Badge
                         variant={
-                          nextAction.priority === 'urgent'
-                            ? 'destructive'
-                            : nextAction.priority === 'high'
-                            ? 'default'
-                            : 'secondary'
+                          nextAction.priority === "urgent"
+                            ? "destructive"
+                            : nextAction.priority === "high"
+                              ? "default"
+                              : "secondary"
                         }
                       >
-                        {nextAction.priority === 'urgent'
-                          ? '🔥 URGENT'
-                          : nextAction.priority === 'high'
-                          ? '⚡ High Priority'
-                          : '📌 Normal'}
+                        {nextAction.priority === "urgent"
+                          ? "🔥 URGENT"
+                          : nextAction.priority === "high"
+                            ? "⚡ High Priority"
+                            : "📌 Normal"}
                       </Badge>
                       <Badge variant="outline">
-                        {nextAction.type === 'task' ? 'Task' : 'Milestone'}
+                        {nextAction.type === "task" ? "Task" : "Milestone"}
                       </Badge>
                     </div>
 
@@ -256,17 +256,17 @@ export function TodayNextStep({
                             <span
                               className={
                                 nextAction.daysUntilDue <= 0
-                                  ? 'text-destructive font-semibold'
+                                  ? "text-destructive font-semibold"
                                   : nextAction.daysUntilDue <= 3
-                                  ? 'text-orange-500 font-semibold'
-                                  : 'text-muted-foreground'
+                                    ? "text-orange-500 font-semibold"
+                                    : "text-muted-foreground"
                               }
                             >
                               {nextAction.daysUntilDue <= 0
                                 ? nextAction.daysUntilDue === 0
-                                  ? '(Today!)'
+                                  ? "(Today!)"
                                   : `(${Math.abs(
-                                      nextAction.daysUntilDue
+                                      nextAction.daysUntilDue,
                                     )} days overdue)`
                                 : `(in ${nextAction.daysUntilDue} days)`}
                             </span>

@@ -9,7 +9,8 @@ import type { Phase } from "@/lib/supabase";
 import { cn } from "@/lib/utils";
 import { formatDate } from "@/lib/utils/dates";
 
-interface RoadmapPhase extends Omit<Phase, 'position' | 'created_at' | 'user_id'> {
+interface RoadmapPhase
+  extends Omit<Phase, "position" | "created_at" | "user_id"> {
   position?: number;
   created_at?: string;
   user_id?: string;
