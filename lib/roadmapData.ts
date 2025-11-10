@@ -1,24 +1,37 @@
-import type { DetailedPhase } from "@/components/PhaseDetailView";
+// MISSION PLAN: ASSANE DIALLO
+// Core Goal: Financial Independence through Real Estate + Cybersecurity Degree
+// Bonus: Cyber Cross-Training → Officer Commission (if it works out)
 
-// Detailed roadmap data based on the comprehensive military nursing plan
-export const roadmapPhases: DetailedPhase[] = [
+import type { Phase } from "./supabase";
+
+// Extended phase type with UI-only fields
+type RoadmapPhase = Omit<Phase, "created_at" | "user_id"> & {
+  objective?: string;
+  sections?: Array<{
+    title: string;
+    items: string[];
+  }>;
+};
+
+export const phases: RoadmapPhase[] = [
   {
     id: "phase-0",
     name: "Phase 0 — Preparation",
     description:
-      "Ship mentally, physically, and administratively ready. Understand the nursing pathway before you commit.",
+      "Ship ready: physically, administratively, mentally. Marry fiancée (Cape Verdean, in Dakar), start I-130 process.",
     objective:
-      "Ship mentally, physically, and administratively ready. Understand the nursing pathway before you commit.",
+      "Ship to BMT in peak condition. Complete civil marriage and begin immigration process for spouse.",
     start_date: "2024-11-01",
     end_date: "2026-02-03",
     status: "active",
+    position: 0,
     sections: [
       {
         title: "🎯 Physical & Mental Prep",
         items: [
           "Maintain peak fitness — aim to exceed Air Force PT standards before BMT",
           "Target: 1.5 mile run under 10:30, max pushups/situps",
-          "Goal: Arrive at BMT in the top 10% physically (sets tone for entire career)",
+          "Goal: Arrive at BMT in top 25% physically (sets tone for entire career)",
           "Study Air Force culture — read AFI 36-2618 (enlisted evaluation system), watch BMT prep videos",
           "Mental resilience training — BMT is 90% mental; practice stress inoculation",
         ],
@@ -32,797 +45,971 @@ export const roadmapPhases: DetailedPhase[] = [
           "Store digital + physical copies (you'll need these Week 1 of BMT)",
           "Pay off any high-interest debt before shipping",
           "Set up direct deposit for military pay",
-          "Open a high-yield savings account (Ally, Marcus) for emergency fund",
-          "Brief fiancée on military pay schedule, allotments, and SGLI (life insurance)",
+          "Open high-yield savings account (Ally, Marcus, USAA)",
+          "Save $2-3k emergency fund (leave with fiancée/family)",
         ],
       },
       {
-        title: "🎯 Relationship Prep (Critical)",
+        title: "🎯 Marriage & Immigration (CRITICAL)",
         items: [
-          "Set expectations with fiancée about BMT (2 months limited contact)",
-          "Explain tech school timeline (4-5 months, may or may not have off-base privileges)",
-          "Discuss first duty station and when she can join",
-          "Explain AECP timeline and nursing school intensity (60+ hrs/week)",
-          "Discuss military life: PCSing every 3-4 years, deployments, TDYs",
+          "🔥 CIVIL MARRIAGE: December 2025 (your 28th birthday) — ceremony in Dakar or US",
+          "Fiancée is Cape Verdean, currently resides in Dakar, Senegal",
+          "File I-130 Petition for Alien Relative immediately after marriage (January 2026)",
+          "Processing time: 6-12 months for Cape Verdean nationals",
+          "Goal: Wife arrives in US by late 2026 or early 2027",
+          "Set expectations: She may not join immediately (6-12 month separation during BMT/tech school)",
+          "Command sponsorship paperwork: Start as soon as you arrive at first duty station",
         ],
       },
       {
-        title: "🎯 Research Nursing Career",
+        title: "🎯 Relationship Prep",
         items: [
-          "Shadow a nurse (if possible before shipping)",
-          "Volunteer at a hospital or clinic",
-          "Ask about daily reality: bedpans, IVs, emotional toll, shift work",
-          "Read nursing subreddits: r/nursing, r/StudentNurse",
-          "Research AECP: Read AFI 36-2013",
-          "Join Air Force Nursing Facebook groups",
-          "Connect with AECP alumni on LinkedIn",
+          "Explain BMT reality: 8 weeks limited contact (letters only, 1-2 phone calls)",
+          "Explain tech school: 4-5 months at Fort Sam Houston, TX",
+          "Discuss military life: PCSing every 3-4 years, possible OCONUS assignments, deployments",
+          "Explain the 10-15 year plan: cyber career path + real estate + business building",
+          "Confirm she's okay with potential separation during immigration processing",
+        ],
+      },
+      {
+        title: "🎯 Start Security+ Preparation (Get Ahead)",
+        items: [
+          "Security+ is MANDATORY for cyber cross-training (application in 2028-2029)",
+          "Study resources: Professor Messer (YouTube, free), CompTIA official guide",
+          "Practice exams: Udemy, ExamCompass",
+          "Goal: Take exam before BMT if possible (saves time later)",
+          "Cost: $400 exam fee (can use TA after enlisting)",
         ],
       },
     ],
-    checklists: [
-      {
-        title: "Phase 0 Checklist",
-        items: [
-          { text: "Run 1.5 miles under 10:30 consistently", completed: false },
-          {
-            text: "Gather all citizenship documents (digital + physical)",
-            completed: false,
-          },
-          { text: "Pay off high-interest debt", completed: false },
-          {
-            text: "Set up direct deposit + high-yield savings",
-            completed: false,
-          },
-          {
-            text: "Have 'real talk' with fiancée about military life + nursing school",
-            completed: false,
-          },
-          {
-            text: "Shadow a nurse or volunteer in healthcare setting",
-            completed: false,
-          },
-          { text: "Read AFI 36-2013 (AECP requirements)", completed: false },
-          { text: "Join Air Force Nursing community online", completed: false },
-        ],
-      },
-    ],
-    successMetrics: [],
   },
   {
     id: "phase-1",
-    name: "Phase 1 — BMT",
-    description: "Basic Military Training at Lackland AFB, Texas",
+    name: "Phase 1 — BMT & Citizenship",
+    description:
+      "Graduate BMT, apply for U.S. citizenship, build leadership foundation",
     objective:
-      "Graduate BMT with strong evaluations. Initiate citizenship process. Build reputation as a leader.",
+      "Graduate BMT with strong evaluations. Initiate citizenship process Week 1.",
     start_date: "2026-02-03",
     end_date: "2026-03-31",
     status: "upcoming",
+    position: 1,
     sections: [
       {
         title: "🎯 Citizenship (Priority #1)",
         items: [
-          "Week 1 of BMT: Inform Training Instructor (TI) you want to apply for citizenship",
-          "Request meeting with USCIS liaison on base",
+          "🔥 WEEK 1 OF BMT: Inform Training Instructor (TI) you want to apply for citizenship",
+          "Request meeting with USCIS liaison on base (every BMT base has one)",
           "Fill out Form N-400 (Application for Naturalization)",
           "Fill out Form N-426 (Request for Certification of Military Service)",
-          "Submit fingerprints + documents",
-          "Get case number, check status online when possible",
-          "Goal: Citizenship approved by graduation or shortly after",
+          "Submit fingerprints + all citizenship documents",
+          "Get USCIS case number and track it",
+          "Timeline: Citizenship typically granted 3-8 months after application",
+          "Goal: U.S. citizen by June-December 2026",
         ],
       },
       {
         title: "🎯 BMT Excellence",
         items: [
+          "Mindset: BMT is an 8-week interview for your entire Air Force career",
           "Volunteer for leadership roles (dorm chief, element leader, chow runner)",
-          "Help struggling trainees (builds reputation as future NCO/officer)",
+          "Help struggling trainees (builds reputation as future leader)",
           "Ace written tests (EOC exam, drill tests)",
-          "Goal: Graduate as Honor Graduate or Warhawk (if you're top performer)",
-          "Your BMT performance shows up in records and builds confidence",
+          "Goal: Graduate as Honor Graduate or Warhawk if possible",
+          "Your BMT performance goes in records — sets tone for cross-training application",
         ],
       },
       {
-        title: "🎯 Network Building",
+        title: "📋 Phase 1 Checklist",
         items: [
-          "Connect with instructors who are former 4N0s",
-          "Ask about tech school, first duty stations, AECP",
-          "Make friends with future nurses or med trainees",
+          "[ ] File N-400 and N-426 (Week 1)",
+          "[ ] Track citizenship case number",
+          "[ ] Volunteer for leadership roles",
+          "[ ] Graduate BMT (ideally with honors)",
         ],
       },
-    ],
-    checklists: [
-      {
-        title: "Phase 1 Checklist",
-        items: [
-          { text: "File N-400 and N-426 (Week 1)", completed: false },
-          { text: "Track citizenship case number", completed: false },
-          { text: "Volunteer for leadership roles", completed: false },
-          { text: "Graduate BMT (ideally with honors)", completed: false },
-          { text: "Network with 4N0 instructors", completed: false },
-        ],
-      },
-    ],
-    successMetrics: [
-      { metric: "Citizenship application submitted", achieved: false },
-      { metric: "BMT graduation (with strong eval)", achieved: false },
-      { metric: "Leadership recognition (any awards/honors)", achieved: false },
     ],
   },
   {
     id: "phase-2",
-    name: "Phase 2 — Tech School: 4N0 Aerospace Medical Service",
+    name: "Phase 2 — Tech School (4N0 Aerospace Medical Service)",
     description:
-      "Medical training at Fort Sam Houston, Texas (Joint Base San Antonio)",
+      "Graduate 4N0 tech school, earn CCAF credits, assess tolerance for clinical work",
     objective:
-      "Graduate top of class. Earn CCAF credits. Begin nursing prerequisites research. Confirm you like clinical medicine.",
+      "Graduate tech school in top 25%. Confirm you can tolerate clinical medicine. Earn CCAF credits.",
     start_date: "2026-04-01",
     end_date: "2026-08-31",
     status: "upcoming",
+    position: 2,
     sections: [
       {
         title: "🎯 Academic Excellence",
         items: [
-          "Goal: Graduate in top 10% of class",
-          "4N0 tech school covers: patient care, medical terminology, pharmacology basics, emergency procedures",
-          "This is your audition for nursing — if you struggle here, nursing school will be harder",
+          "Location: Fort Sam Houston (Joint Base San Antonio), Texas",
+          "Duration: 16-20 weeks",
+          "Goal: Graduate in top 25% of class",
+          "Coursework: patient care, medical terminology, pharmacology basics, emergency procedures",
+          "Why this matters: Strong tech school performance helps future cross-training application",
+        ],
+      },
+      {
+        title: "🎯 Clinical Reality Check (Decision Point #1)",
+        items: [
+          "During tech school clinicals, you'll experience: bedpans, catheters, wound care, taking vitals, giving injections, blood/bodily fluids",
+          "Ask yourself: Can I tolerate this for 3-6 years? (Until you finish cybersecurity degree)",
+          "Decision: ✅ If tolerating it okay → Continue with plan",
+          "Decision: ⚠️ If struggling but not hating it → Remind yourself this is temporary",
+          "Decision: 🚨 If you absolutely hate it → Consider cross-training earlier or pivoting career path",
+        ],
+      },
+      {
+        title: "🎯 CCAF Credits",
+        items: [
+          "Tech school = ~20-30 credits toward CCAF (Associate in Health Science)",
           "Request official transcript at graduation",
-          "Identify which credits transfer to BSN prerequisites",
+          "Check which credits transfer to WGU B.S. Cybersecurity program",
+          "Medical terminology/anatomy credits may transfer as general education electives",
         ],
       },
       {
-        title: "🎯 Clinical Reality Check",
+        title: "🎯 Marriage & Immigration Update",
         items: [
-          "Do you like direct patient care?",
-          "Can you handle bodily fluids, emotional patients, life-or-death situations?",
-          "Do you prefer hands-on care or would you rather be at a desk?",
-          "Shadow different roles: RNs, physicians, admin staff",
-          "Figure out which role excites you most",
+          "Update DEERS (military benefits system) with marriage info",
+          "Add spouse to TRICARE (health insurance)",
+          "Update BAH to 'with dependents' rate (higher pay)",
+          "Check I-130 status (should be processing)",
+          "Goal: Wife approved to join by end of 2026 or early 2027",
         ],
       },
       {
-        title: "🎯 AECP Preparation Begins",
+        title: "📋 Phase 2 Checklist",
         items: [
-          "Research BSN prerequisites: Anatomy & Physiology I & II (8 credits)",
-          "Research: Microbiology (4 credits), Chemistry (4 credits)",
-          "Research: Nutrition (3 credits), Psychology (3 credits)",
-          "Research: Statistics (3 credits), English Composition (3 credits)",
-          "Total: ~28-30 credits (can be done in 1.5-2 years part-time)",
-          "Research which BSN programs are AECP-approved",
-          "Connect with AECP alumni on Facebook groups, LinkedIn",
+          "[ ] Graduate 4N0 tech school (90+ GPA if possible)",
+          "[ ] Obtain CCAF transcript",
+          "[ ] Confirm interest in continuing (or identify need to pivot)",
+          "[ ] Update DEERS/TRICARE/BAH for marriage",
+          "[ ] Track citizenship (should be approved by now or soon)",
         ],
       },
-    ],
-    checklists: [
-      {
-        title: "Phase 2 Checklist",
-        items: [
-          {
-            text: "Graduate 4N0 tech school (top 10% if possible)",
-            completed: false,
-          },
-          { text: "Obtain official CCAF transcript", completed: false },
-          {
-            text: "Confirm which tech school credits transfer to BSN prerequisites",
-            completed: false,
-          },
-          {
-            text: "Shadow nurses during clinicals (confirm you like patient care)",
-            completed: false,
-          },
-          { text: "Research AECP-approved BSN programs", completed: false },
-          { text: "Connect with 2-3 AECP alumni for advice", completed: false },
-          { text: "Stay in top physical condition", completed: false },
-        ],
-      },
-    ],
-    successMetrics: [
-      { metric: "Tech school graduation (90+ GPA)", achieved: false },
-      { metric: "CCAF transcript in hand", achieved: false },
-      {
-        metric: "Confirmed interest in nursing (vs. HIM or other fields)",
-        achieved: false,
-      },
-      { metric: "List of 5-10 AECP-approved BSN programs", achieved: false },
     ],
   },
   {
-    id: "phase-3-year1",
-    name: "Phase 3 Year 1 — First Duty Station: Stability & Foundation",
+    id: "phase-3",
+    name: "Phase 3 — First Duty Station (Build Phase)",
     description:
-      "Marry, excel at work, start prerequisites, build credit and emergency fund",
+      "Excel at 4N0, get Security+/CySA+/CEH, start WGU cybersecurity bachelor, buy property, build wealth",
     objective:
-      "Marry. Excel at duty station. Complete 21 credits of nursing prerequisites. Build financial foundation.",
+      "This is THE critical phase. Build foundation for: (1) Cyber cross-training, (2) Real estate wealth, (3) Side business. Finish bachelor's degree.",
     start_date: "2026-09-01",
-    end_date: "2027-08-31",
+    end_date: "2029-08-31",
     status: "upcoming",
+    position: 3,
     sections: [
       {
-        title: "🎯 Priority 1: Marriage (Dec 2026)",
+        title: "🎯 Year 1 (Sep 2026 - Aug 2027): Foundation",
         items: [
-          "Target date: December 6, 2026 (your 28th birthday — symbolic)",
-          "File I-130 immediately after marriage (Petition for Alien Relative)",
-          "Fiancée arrives: 3-6 months later (Mar-Jun 2027)",
-          "Update DEERS (military dependents database)",
-          "Add spouse to health insurance (TRICARE)",
-          "Update BAH (you'll now get BAH with dependents = higher rate)",
+          "🔥 PRIORITY: Wife arrives in US (late 2026 or early 2027 once I-130 processed)",
+          "Complete 4N0 CDCs within 4 months (Career Development Courses — faster = better EPR)",
+          "Volunteer for extra duties, build rapport with leadership",
+          "Goal: First EPR should be strong ('Exceeds' or better)",
+          "Promote to SrA (E-4) automatically at ~20 months TIS (May 2027)",
         ],
       },
       {
-        title: "🎯 Priority 2: Excel at Duty Station",
+        title: "🎯 CYBERSECURITY CERTIFICATIONS (CRITICAL PATH)",
         items: [
-          "First 90 days: Learn your clinic/hospital inside-out",
-          "Volunteer for extra duties (show initiative)",
-          "Build rapport with NCOIs, NCOs, and leadership",
-          "Complete CDCs in 3-4 months (faster = better EPR)",
-          "Get qualified on as many tasks as possible (IVs, phlebotomy, EKGs)",
-          "Volunteer for deployments/TDYs if opportunities arise",
+          "🔥🔥 SECURITY+ (MANDATORY for cyber cross-training) — Target: Jun 2027",
+          "Study: Professor Messer (YouTube), CompTIA guide, practice exams",
+          "Cost: $400 (TA covers this)",
+          "Study time: 2-3 hours/day for 8-12 weeks",
+          "CySA+ (Cybersecurity Analyst+) — Target: Dec 2027",
+          "Cost: $400 (TA covers)",
+          "Adds credits at WGU + strengthens resume",
+          "CEH (Certified Ethical Hacker) — Target: Jun 2028",
+          "Cost: $1,200 (TA covers)",
+          "Strengthens cyber cross-training package significantly",
         ],
       },
       {
-        title: "🎯 Priority 3: Nursing Prerequisites",
+        title: "🎯 BACHELOR'S IN CYBERSECURITY (WGU)",
         items: [
-          "Fall 2026: Anatomy & Physiology I (4 credits) + English Comp (3 credits)",
-          "Spring 2027: Anatomy & Physiology II (4 credits) + Psychology (3 credits)",
-          "Summer 2027: Microbiology (4 credits) + Nutrition (3 credits)",
-          "Total after Year 1: 21 credits completed",
-          "GPA Goal: 3.5+ (AECP is competitive)",
-          "Use Tuition Assistance: $250/credit hour, up to $4,500/year",
+          "Contact WGU admissions (Mar 2027): Submit SpanTran evaluation, ask about credit transfer",
+          "Your French diploma (Level 7 in CS/AI/Data) may get you 20-40 credits of 'advanced standing'",
+          "Enroll at WGU: Sep 2027",
+          "Program: B.S. Cybersecurity and Information Assurance",
+          "Cost: ~$3,800 per 6-month term (TA covers $4,500/year = fully funded)",
+          "Self-paced, competency-based = finish courses as fast as you can prove competency",
+          "Goal: Finish in 12-24 months (by Jun 2029)",
+          "Strategy: Security+/CySA+/CEH certs = automatic credits at WGU (saves time)",
         ],
       },
       {
-        title: "🎯 Priority 4: Build Credit & Financial Foundation",
+        title: "🎯 EDPT Preparation (Cyber Aptitude Test)",
         items: [
-          "Get a credit card (USAA, Navy Federal)",
-          "Use it for groceries, gas — pay off in full every month",
-          "Goal: 700+ credit score by 2027",
-          "Save $5,000 minimum emergency fund",
-          "Keep in high-yield savings (Ally, Marcus = 4-5% APY)",
-          "Contribute at least 5% to TSP (Thrift Savings Plan)",
-          "Air Force matches 5% — this is free money",
-          "Use Roth TSP (tax-free growth)",
-        ],
-      },
-    ],
-    checklists: [
-      {
-        title: "Year 1 Checklist",
-        items: [
-          { text: "Get married (Dec 2026)", completed: false },
-          { text: "File I-130 for spouse (if needed)", completed: false },
-          { text: "Update DEERS, TRICARE, BAH", completed: false },
-          { text: "Complete 4N0 CDCs (within 4 months)", completed: false },
-          {
-            text: "Finish 21 credits of nursing prerequisites (GPA 3.5+)",
-            completed: false,
-          },
-          { text: "Build credit to 700+", completed: false },
-          { text: "Save $5,000 emergency fund", completed: false },
-          {
-            text: "Volunteer for extra duties (build EPR bullets)",
-            completed: false,
-          },
-        ],
-      },
-    ],
-    successMetrics: [
-      {
-        metric: "Married with spouse at duty station",
-        target: "Jun 2027",
-        achieved: false,
-      },
-      { metric: "21 credits completed", target: "GPA 3.5+", achieved: false },
-      { metric: "Credit score", target: "700+", achieved: false },
-      { metric: "Emergency fund", target: "$5,000", achieved: false },
-      { metric: "CDCs completed", achieved: false },
-    ],
-  },
-  {
-    id: "phase-3-year2",
-    name: "Phase 3 Year 2 — AECP Application & Real Estate",
-    description:
-      "Complete prerequisites, apply for AECP, promote to SSgt, buy first property",
-    objective:
-      "Complete all nursing prerequisites. Submit AECP application. Promote to SSgt. Buy first property.",
-    start_date: "2027-09-01",
-    end_date: "2028-08-31",
-    status: "upcoming",
-    sections: [
-      {
-        title: "🎯 Priority 1: Complete Remaining Prerequisites",
-        items: [
-          "Fall 2027: Chemistry (4 credits) + Statistics (3 credits)",
-          "Spring 2028: Elective (3 credits) — pick something easy to boost GPA",
-          "Total after Year 2: 31 credits completed (all prerequisites done)",
-          "Calculate science GPA (A&P, micro, chem)",
-          "If below 3.3, consider retaking lowest grade",
+          "EDPT = Electronic Data Processing Test (required for 1B4X1 cyber cross-training)",
+          "Format: 120 questions in 90 minutes (math, logic, sequences, patterns)",
+          "Passing score: 60+ (aim for 70+)",
+          "Study: Practice tests online (Peterson's, APEX Test Prep)",
+          "Take official EDPT on base: Jun 2028 (before cross-training application)",
         ],
       },
       {
-        title: "🎯 Priority 2: AECP Application (Feb-Apr 2028)",
+        title: "🎯 REAL ESTATE: First Property (Year 2)",
         items: [
-          "Application opens: Typically Feb-Mar each year",
-          "Complete AF Form 56 (application)",
-          "Gather official transcripts (all prerequisites)",
-          "Get Commander's recommendation letter",
-          "Write personal statement (why nursing, why you, career goals)",
-          "Ensure physical fitness test scores are current + passing",
-          "Gather all EPRs",
-          "Get 3-5 letters of recommendation",
+          "Timeline: Q4 2027 or Q1 2028 (after 18-24 months at duty station)",
+          "VA Loan Strategy:",
+          "- Eligibility: 181 days active duty (you qualify ~Aug 2026)",
+          "- Lenders prefer 12-24 months employment history → wait until late 2027",
+          "- 0% down payment with VA loan",
+          "Property type: Duplex, triplex, or fourplex (2-4 units)",
+          "Purchase price: $300-400k (depends on local market)",
+          "House-hacking strategy: Live in one unit, rent the others",
+          "Example: Buy triplex for $400k, rent 2 units for $1,800/mo, your BAH covers your portion",
+          "IF STATIONED OCONUS (Germany/Japan/Korea):",
+          "- Cannot buy property overseas with VA loan",
+          "- Instead: SAVE AGGRESSIVELY ($3,000+/month possible)",
+          "- Goal: $50k saved by 2029 (for property when you PCS back to CONUS)",
         ],
       },
       {
-        title: "🎯 Priority 3: Promote to SSgt (E-5)",
+        title: "🎯 SIDE BUSINESS Launch (Critical for Financial Independence)",
         items: [
-          "Become eligible for BTZ (Below-The-Zone) for SrA",
-          "Requires: Top EPRs, strong package, commander endorsement",
-          "If you make BTZ → huge boost to AECP application",
-          "If not BTZ, test for SSgt",
-          "Study for promotion test (PDG + SKT)",
-          "Goal: Make SSgt by 2028 (before AECP board)",
+          "Start: Jun 2027 (once wife arrives and you're settled)",
+          "Options: E-commerce (dropshipping, Amazon FBA), real estate wholesaling, freelance consulting (web dev, data analysis), content creation",
+          "Goal Year 1: $500-1,000/month",
+          "Goal Year 2: $1,500-2,500/month",
+          "Goal Year 3: $3,000-5,000/month (by 2030)",
+          "Mindset: This is your PATH TO FINANCIAL INDEPENDENCE (not military career)",
+          "Time investment: 10-20 hours/week (nights/weekends)",
         ],
       },
       {
-        title: "🎯 Priority 4: Buy First Property (Mid-2027)",
+        title: "🎯 PROMOTION to SSgt (E-5)",
         items: [
-          "Q3 2027: Get pre-approved for VA loan",
-          "Q4 2027: House hunting (weekends)",
-          "Q1 2028: Close on property, move in",
-          "Q2 2028: Get tenants in other units, stabilize income",
-          "Property type: 2-4 unit multifamily (duplex, triplex, or fourplex)",
-          "Strategy: Live in one unit, rent the others (house hacking)",
-          "Down payment: 0% with VA loan",
+          "Eligible to test: ~3 years TIS (Feb 2029)",
+          "Study: PDG (Professional Development Guide) + 4N0 SKT (Specialty Knowledge Test)",
+          "Goal: Make SSgt by Summer 2029",
+          "Why this matters: E-5 rank strengthens cross-training application (shows sustained excellence)",
         ],
       },
-    ],
-    checklists: [
       {
-        title: "Year 2 Checklist",
+        title: "🎯 CROSS-TRAINING APPLICATION (Critical Decision Point)",
         items: [
-          {
-            text: "Complete final 10 credits of prerequisites (GPA 3.5+)",
-            completed: false,
-          },
-          { text: "Submit AECP application (Feb-Apr 2028)", completed: false },
-          { text: "Promote to SSgt (or test for it)", completed: false },
-          {
-            text: "Buy first property using VA loan (Q4 2027 - Q1 2028)",
-            completed: false,
-          },
-          { text: "Get tenants in place (Q2 2028)", completed: false },
-          { text: "Maintain excellent EPRs", completed: false },
-          {
-            text: "Build relationship with commander (strong rec letter)",
-            completed: false,
-          },
+          "Application window: Jul-Sep 2028 (6 months before FTA window opens)",
+          "FTA (First-Term Airman) window: 35-43 months TIS = Jan-Sep 2029",
+          "Target AFSCs:",
+          "1. 1B4X1 (Cyber Warfare Operations) — offensive/defensive cyber, requires TS clearance",
+          "2. 1D7X1 (Cyber Defense Operations) — network defense, requires Secret clearance",
+          "Required for application:",
+          "- Security+ certification ✅",
+          "- EDPT score 60+ (aim for 70+) ✅",
+          "- U.S. citizenship ✅",
+          "- Strong EPRs ✅",
+          "- Commander recommendation ✅",
+          "- No disciplinary issues ✅",
+          "Approval probability: 60-80% (cyber is critically manned, Air Force wants you)",
+          "Processing time: 2-6 months (results by Jan 2029)",
         ],
       },
-    ],
-    successMetrics: [
       {
-        metric: "All nursing prerequisites completed",
-        target: "31 credits, GPA 3.5+",
-        achieved: false,
-      },
-      { metric: "AECP application submitted", achieved: false },
-      { metric: "SSgt rank achieved (E-5)", achieved: false },
-      {
-        metric: "First property purchased + tenants in place",
-        achieved: false,
-      },
-      { metric: "Credit score", target: "720+", achieved: false },
-      { metric: "Emergency fund", target: "$10k+", achieved: false },
-      { metric: "TSP balance", target: "$10-15k", achieved: false },
-    ],
-    decisionPoints: [
-      {
-        title: "AECP Results Decision Point (Jun-Jul 2028)",
-        scenario: "AECP application results are announced",
-        outcome: "Two possible outcomes determine your path forward",
-        actions: [],
-        recommendation: "Prepare for both outcomes. Have a backup plan ready.",
+        title: "📋 Phase 3 Success Metrics (End of Year 3)",
+        items: [
+          "✅ Married with wife at duty station",
+          "✅ Security+ certified (Jun 2027)",
+          "✅ CySA+ certified (Dec 2027)",
+          "✅ CEH certified (Jun 2028)",
+          "✅ Bachelor's in Cybersecurity completed or nearly done (Jun 2029)",
+          "✅ SSgt rank (E-5)",
+          "✅ First property purchased (if CONUS) OR $50k saved (if OCONUS)",
+          "✅ Side business generating $2-3k/month",
+          "✅ Cross-training application submitted",
+          "✅ EDPT passed",
+        ],
       },
     ],
   },
   {
     id: "phase-4a",
-    name: "Phase 4A — AECP Nursing School (If Accepted)",
+    name: "Phase 4A — Cyber Track (If Cross-Train Approved)",
     description:
-      "Accelerated BSN program as AECP selectee, receiving full E-5 pay + tuition covered",
+      "Cyber tech school → work as cyber operator → apply for 17D commission (optional)",
     objective:
-      "Graduate BSN. Pass NCLEX. Commission as Nurse Corps Officer (O-1).",
-    start_date: "2028-09-01",
-    end_date: "2030-06-30",
+      "Build hands-on cyber experience. Continue real estate + business. Apply for officer commission if desired.",
+    start_date: "2029-02-01",
+    end_date: "2033-02-01",
     status: "upcoming",
+    position: 4,
     sections: [
       {
-        title: "🎯 Year 1: Nursing School Foundations",
+        title: "🎯 Cyber Tech School (2029)",
         items: [
-          "Fall 2028: Fundamentals of Nursing, Pathophysiology, Pharmacology I",
-          "Spring 2029: Med-Surg Nursing I, Pharmacology II, Health Assessment",
-          "Summer 2029: Med-Surg Nursing II, Mental Health Nursing",
-          "Form study groups (your cohort is your lifeline)",
-          "Use NCLEX prep resources from Day 1 (UWorld, Saunders, Mark Klimek lectures)",
-          "Average 50-60 hrs/week (class + clinical + study time)",
+          "Location: Keesler AFB (Mississippi) or Goodfellow AFB (Texas)",
+          "Duration: 1B4X1 = ~6 months, 1D7X1 = 4-6 months",
+          "Training: Offensive/defensive cyber operations, network exploitation, incident response",
+          "You'll need to extend enlistment by 6-12 months (standard for cross-training)",
+          "New contract end: Aug 2032 - Feb 2033 (6.5-7 years total)",
         ],
       },
       {
-        title: "🎯 Year 2: Clinical Mastery & Commissioning Prep",
+        title: "🎯 Work as Cyber Operator (2029-2032)",
         items: [
-          "Fall 2029: Pediatric Nursing, OB Nursing, Community Health",
-          "Spring 2030: Critical Care Nursing, Leadership/Management, Capstone",
-          "Jan-May 2030: Do 100-150 NCLEX practice questions per day",
-          "Focus on weak areas (pharm, prioritization, delegation)",
-          "Take 2-3 full-length practice exams",
-          "Goal: Graduate → take NCLEX within 1 month → pass on first attempt",
+          "Possible assignments: NSA (Fort Meade, MD), Cyber Command units, Base comm squadron, Offensive Cyber Operations units",
+          "Get more certifications: CISSP, OSCP, GIAC certs (Air Force will fund these)",
+          "Build hands-on experience: penetration testing, threat hunting, incident response",
+          "Continue working on bachelor's degree if not finished (WGU online)",
+          "KEEP BUILDING: Real estate + side business (don't let cyber job consume you)",
         ],
       },
       {
-        title: "🎯 Clinical Rotations",
+        title: "🎯 Real Estate: Property #2",
         items: [
-          "Hours required: ~500-600 clinical hours over 2 years",
-          "Settings: Med-surg floors, ICU, ER, pediatrics, OB, psych",
-          "Treat every clinical like a job interview",
-          "Ask questions, volunteer for procedures (IVs, catheters, wound care)",
-          "Get contact info from preceptors (future job references)",
+          "Timeline: 2030 (at cyber assignment)",
+          "Use VA loan again (or conventional if VA entitlement used up)",
+          "Continue house-hacking strategy",
+          "Property manager: Hire one if needed (8-10% of rent)",
         ],
       },
       {
-        title: "🎯 Life Management",
+        title: "🎯 Apply for 17D Cyber Warfare Officer (OPTIONAL)",
         items: [
-          "You're still getting E-5 pay (~$3,500/month base + BAH)",
-          "Budget carefully (books, supplies, fees add up)",
-          "Continue TSP contributions (don't stop investing)",
-          "Schedule weekly date nights with spouse (protect relationship)",
-          "You still need to pass PT tests (Air Force will test you 1-2x during AECP)",
-          "Schedule gym time like a class (3-4x/week, early morning)",
+          "Timeline: 2031-2032 (after 2-3 years as cyber enlisted)",
+          "Requirements:",
+          "- Bachelor's in Cybersecurity ✅",
+          "- U.S. Citizenship ✅",
+          "- TS clearance ✅",
+          "- 2+ years cyber experience ✅",
+          "- Strong performance as cyber operator ✅",
+          "Acceptance rate: 40-60% (competitive but doable)",
+          "IF SELECTED: Commission as O-1, new 4-year commitment",
+          "IF NOT SELECTED: Stay enlisted cyber E-6/E-7 — still excellent civilian exit value ($120-180k)",
+          "NOTE: Officer is OPTIONAL. You can achieve financial independence as enlisted + business.",
         ],
       },
-    ],
-    checklists: [
-      {
-        title: "AECP Year 1 Checklist",
-        items: [
-          {
-            text: "Complete Fall, Spring, Summer semesters (GPA 3.0+ required)",
-            completed: false,
-          },
-          { text: "Log 250+ clinical hours", completed: false },
-          {
-            text: "Pass all nursing exams (75%+ to pass each course)",
-            completed: false,
-          },
-          { text: "Pass Air Force PT test (if tested)", completed: false },
-          { text: "Maintain relationship with spouse", completed: false },
-          {
-            text: "Keep property cashflowing (if applicable)",
-            completed: false,
-          },
-        ],
-      },
-      {
-        title: "AECP Year 2 Checklist",
-        items: [
-          { text: "Complete final semesters (GPA 3.0+)", completed: false },
-          { text: "Graduate with BSN (Jun 2030)", completed: false },
-          { text: "Pass NCLEX on first attempt (Jul 2030)", completed: false },
-          {
-            text: "Commission as Nurse Corps Officer, O-1 (Aug 2030)",
-            completed: false,
-          },
-          { text: "Receive first assignment orders", completed: false },
-          { text: "PCS to first officer duty station", completed: false },
-        ],
-      },
-    ],
-    successMetrics: [
-      { metric: "BSN degree earned", achieved: false },
-      { metric: "NCLEX passed (Registered Nurse license)", achieved: false },
-      { metric: "Commissioned as Nurse Corps Officer (O-1)", achieved: false },
-      { metric: "First officer assignment received", achieved: false },
-      { metric: "Marriage still strong", achieved: false },
-      { metric: "Property #1 still cashflowing (if kept)", achieved: false },
     ],
   },
   {
     id: "phase-4b",
-    name: "Phase 4B — Alternative Path: Reenlist & Pursue BSN (If AECP Rejected)",
+    name: "Phase 4B — Wealth Builder Track (If Cross-Train Denied)",
     description:
-      "Part-time BSN while working full-time, leading to direct commission",
+      "Stay 4N0, finish bachelor, focus on real estate + business empire",
     objective:
-      "Finish BSN using TA + GI Bill. Pass NCLEX. Apply for direct commission.",
-    start_date: "2028-09-01",
-    end_date: "2031-12-31",
+      "Achieve financial independence by age 37-38 through aggressive real estate + business building.",
+    start_date: "2029-09-01",
+    end_date: "2036-09-01",
     status: "upcoming",
+    position: 5,
     sections: [
       {
-        title: "🎯 Reenlistment (Aug 2028)",
+        title: "🎯 Stay 4N0, Promote to E-6 (TSgt)",
         items: [
-          "Reenlist for 4 years (you'll be at ~4 years TIS in 2028)",
-          "Check for reenlistment bonus ($5-15k depending on manning)",
-          "If offered, take it — invest in TSP or rental property",
-          "You need time to finish BSN (can't do it in 1 year while working full-time)",
+          "Cross-training denied? No problem. Stay 4N0 and focus on wealth building.",
+          "Reenlist: 4-6 years (2029-2033 or 2029-2035)",
+          "Promote to TSgt (E-6): Test at ~5 years TIS (2031)",
+          "Mindset: Treat 4N0 as your 'paid stability' while you build wealth on the side",
+          "Work-life balance: Do your job well, but don't overextend (save energy for business)",
         ],
       },
       {
-        title: "🎯 Finish BSN (Sep 2028 - Dec 2031)",
+        title: "🎯 Real Estate: Properties #2, #3, #4",
         items: [
-          "Enroll in online BSN program (WGU, Chamberlain, Capella)",
-          "Most programs = 2-3 years part-time",
-          "Year 1 (2028-2029): Fundamentals, Pathophysiology, Pharmacology (15 credits)",
-          "Year 2 (2029-2030): Med-Surg, Health Assessment, Mental Health (15 credits)",
-          "Year 3 (2030-2031): Critical Care, OB, Peds, Leadership, Capstone (30 credits)",
-          "Total: 60 credits (you already have 30 from prerequisites)",
-          "Use TA for first $4,500/year, Use GI Bill for remainder",
-          "Total cost: $0 out-of-pocket",
+          "Buy property at EVERY PCS (every 3-4 years)",
+          "Timeline:",
+          "- Property #2: 2030 (second duty station)",
+          "- Property #3: 2033 (third duty station)",
+          "- Property #4: 2036 (fourth duty station)",
+          "Strategy: Live in one unit, rent others, then rent your unit when you PCS",
+          "By 2036: 4 properties generating $500-800/mo cashflow EACH = $2,000-3,200/mo total",
+          "This is $24k-38k/year PASSIVE INCOME just from real estate",
         ],
       },
       {
-        title: "🎯 Work Performance (Continue Excelling)",
+        title: "🎯 Scale Side Business Aggressively",
         items: [
-          "Promote to TSgt (E-6): Test for TSgt in 2029-2030",
-          "Goal: Make E-6 by 2031 (shows sustained excellence)",
-          "Volunteer for flight chief, training monitor, deployment",
-          "Build strong EPRs (you'll need them for direct commission package)",
-          "If deployment opportunities arise, take them",
+          "You have bachelor's in cybersecurity = freelance consulting opportunities",
+          "Options: Cybersecurity consulting, web development, data analysis, e-commerce, real estate wholesaling",
+          "Timeline:",
+          "- 2029-2030: $3-4k/month ($36-48k/year)",
+          "- 2031-2032: $4-5k/month ($48-60k/year)",
+          "- 2033-2035: $5-7k/month ($60-84k/year)",
+          "Goal by 2036: $5k+/month business income",
         ],
       },
       {
-        title: "🎯 Real Estate (Continue Building)",
+        title: "🎯 Financial Independence Math",
         items: [
-          "Buy second property at next duty station (if you PCS)",
-          "Use VA loan again or conventional loan",
-          "Goal: 2 properties by 2031",
+          "By age 37-38 (2036-2037):",
+          "Rental income: 4 properties × $600/mo avg = $2,400/mo ($28,800/year)",
+          "Business income: $5,000/mo ($60,000/year)",
+          "Total passive income: $7,400/mo ($88,800/year)",
+          "Your expenses: ~$5,000/mo ($60,000/year)",
+          "YOU ARE FINANCIALLY INDEPENDENT ✅",
+          "You no longer NEED military paycheck (but you can keep it for 20-year retirement)",
         ],
       },
       {
-        title: "🎯 Direct Commission Application (2031)",
+        title: "🎯 Options at Financial Independence",
         items: [
-          "Graduate BSN: Dec 2031",
-          "Pass NCLEX: Jan 2032",
-          "Apply for direct commission: Feb 2032",
-          "Get selected: Apr-May 2032",
-          "Commission as O-1: Jun 2032",
-          "Acceptance rate: ~80-90% (way higher than OTS)",
+          "Option 1: Stay military, coast to 20 years (2046) for pension + healthcare",
+          "Option 2: Separate early (2036), use bachelor's in cybersecurity to get $100-150k civilian job",
+          "Option 3: Go full-time entrepreneur (manage properties + scale business)",
+          "Option 4: Take a 'passion job' (work because you WANT to, not because you NEED to)",
         ],
-      },
-    ],
-    checklists: [
-      {
-        title: "Phase 4B Checklist",
-        items: [
-          { text: "Reenlist for 4 years (Aug 2028)", completed: false },
-          { text: "Enroll in online BSN program", completed: false },
-          { text: "Complete Year 1 courses (15 credits)", completed: false },
-          { text: "Complete Year 2 courses (15 credits)", completed: false },
-          { text: "Complete Year 3 courses (30 credits)", completed: false },
-          { text: "Graduate with BSN (Dec 2031)", completed: false },
-          { text: "Pass NCLEX (Jan 2032)", completed: false },
-          { text: "Promote to TSgt (E-6)", completed: false },
-          { text: "Buy Property #2", completed: false },
-          { text: "Apply for direct commission (Feb 2032)", completed: false },
-        ],
-      },
-    ],
-    successMetrics: [
-      {
-        metric: "BSN degree earned (part-time while working)",
-        achieved: false,
-      },
-      { metric: "NCLEX passed", achieved: false },
-      { metric: "Promoted to TSgt (E-6)", achieved: false },
-      { metric: "Property #2 purchased", achieved: false },
-      { metric: "Direct commission application submitted", achieved: false },
-      {
-        metric: "10 years of service (eligible for retirement at 20)",
-        achieved: false,
       },
     ],
   },
   {
     id: "phase-5",
-    name: "Phase 5 — Officer Life: Nurse Corps",
+    name: "Phase 5 — Financial Independence & Maximum Flexibility",
     description:
-      "Build officer career, specialize, expand real estate, prepare for retirement or separation",
+      "Achieve $60-90k/year passive income. Live life on YOUR terms.",
     objective:
-      "Build officer career. Specialize. Expand real estate. Prepare for retirement or separation.",
-    start_date: "2030-08-01",
-    end_date: "2035-12-31",
-    status: "upcoming",
-    sections: [
-      {
-        title: "🎯 First Officer Assignment (O-1 → O-2)",
-        items: [
-          "Typical assignments: Medical-surgical floor nurse, Emergency room, ICU, Flight medicine",
-          "Duration: 2-3 years at first assignment",
-          "Promotion to O-2 (1st Lt): Automatic after 18 months as O-1",
-          "Pay jump: ~$45k → $52k base pay",
-        ],
-      },
-      {
-        title: "🎯 Clinical Specialization",
-        items: [
-          "Flight nurse (if you want to deploy, do aeromedical evacuations)",
-          "Critical care (ICU, ER — high-demand, high-stress)",
-          "Nurse anesthetist (CRNA) — requires master's, pays $150-250k civilian",
-          "Nurse practitioner (NP) — advanced practice, can diagnose/prescribe",
-          "Air Force will pay for your master's using TA or AFIT",
-          "Goal: Finish MSN (Master of Science in Nursing) by 2035",
-        ],
-      },
-      {
-        title: "🎯 Real Estate Expansion (Property #2, #3)",
-        items: [
-          "Buy property at each PCS (every 3-4 years)",
-          "By 2035, you could have 3-4 properties",
-          "Example: Property #1 (2027), Property #2 (2030), Property #3 (2033)",
-          "Total equity target: $350k by 2035",
-          "Total passive income target: $1,200/month by 2035",
-        ],
-      },
-      {
-        title: "🎯 Family Planning",
-        items: [
-          "By 2035, you'll be 37 years old",
-          "If you want kids, discuss timeline with spouse",
-          "TRICARE covers maternity",
-          "Officer life is more stable than enlisted",
-          "After 6 years commissioned service, transfer GI Bill to spouse/kids",
-          "This is worth $100k+ in education benefits",
-        ],
-      },
-    ],
-    checklists: [
-      {
-        title: "Phase 5 Checklist",
-        items: [
-          { text: "Complete first officer assignment", completed: false },
-          {
-            text: "Promote to O-2 (automatic after 18 months)",
-            completed: false,
-          },
-          { text: "Choose clinical specialization", completed: false },
-          {
-            text: "Apply for MSN program (CRNA, NP, or other)",
-            completed: false,
-          },
-          { text: "Buy Property #2", completed: false },
-          { text: "Buy Property #3", completed: false },
-          {
-            text: "Transfer GI Bill to dependents (if applicable)",
-            completed: false,
-          },
-          { text: "Promote to O-3 (Captain)", completed: false },
-        ],
-      },
-    ],
-    successMetrics: [
-      {
-        metric: "Promoted to O-3 (Captain)",
-        target: "After 4 years as O-2",
-        achieved: false,
-      },
-      { metric: "MSN degree (or in progress)", achieved: false },
-      {
-        metric: "Specialty certification (flight nurse, ICU, NP, or CRNA)",
-        achieved: false,
-      },
-      {
-        metric: "3-4 rental properties",
-        target: "Equity $300k+, cashflow $1,000+/month",
-        achieved: false,
-      },
-      { metric: "TSP balance", target: "$100k+", achieved: false },
-      { metric: "GI Bill transferred to dependents", achieved: false },
-      { metric: "Family stable and thriving", achieved: false },
-    ],
-  },
-  {
-    id: "phase-6",
-    name: "Phase 6 — Family, Legacy & Financial Independence",
-    description:
-      "Decide on retirement/separation, achieve financial independence, set up next chapter",
-    objective:
-      "Decide on retirement/separation. Achieve financial independence. Set up next chapter.",
+      "You've reached financial independence. Decide what fulfills you.",
     start_date: "2036-01-01",
     end_date: "2040-12-31",
     status: "upcoming",
+    position: 6,
     sections: [
       {
-        title: "🎯 Decision Point: Stay or Separate?",
+        title: "🎯 Financial Independence Achieved",
         items: [
-          "At 20 years of service (2046), you're eligible for military retirement",
-          "By 2035 (17 years of service), you'll need to decide your path",
-          "Option A: Stay Until Retirement (20 years)",
-          "Option B: Separate at 17-18 Years",
-          "Option C: Guard/Reserve (best of both worlds)",
+          "Passive income: $60-90k/year (rentals + business)",
+          "Net worth: $1.2-1.5M (real estate equity + investments + TSP)",
+          "Debt: Rental mortgages (but assets exceed liabilities)",
+          "You don't NEED to work anymore (but you can if you want)",
         ],
       },
       {
-        title: "🎯 Financial Independence Analysis (2035)",
+        title: "🎯 Life Decisions",
         items: [
-          "Real estate portfolio: 3-4 properties, equity $300-400k",
-          "Passive income: $12-18k/year ($1,000-1,500/month)",
-          "TSP balance: ~$100-150k (17 years of contributions)",
-          "Officer pay (O-3 with 17 years): ~$95-105k/year total comp",
-          "Civilian nursing market value: $80-250k depending on specialty",
-          "Net worth target by 2035: $400-500k",
+          "Stay in military? (Coast to 20 for pension, or continue to enjoy the structure)",
+          "Separate for high-paying civilian job? (Cybersecurity: $100-250k with clearance)",
+          "Full-time entrepreneur? (Scale business, manage properties, new ventures)",
+          "Semi-retire? (Work part-time, travel, spend time with family)",
+          "The choice is YOURS.",
         ],
       },
       {
-        title: "🎯 Legacy Planning",
+        title: "🎯 Family & Legacy",
         items: [
-          "Transfer GI Bill to kids (covers 4 years of college per child)",
-          "Or: Save in 529 plan (tax-advantaged education savings)",
-          "Your real estate portfolio becomes inheritance",
-          "Teach kids about investing, real estate, financial independence",
-          "Mentor young airmen interested in nursing/commissioning",
-          "Volunteer in your community",
-          "Stay connected to Air Force (alumni networks)",
+          "Transfer GI Bill to kids (after 10 years service) — worth $100k+ per child",
+          "Teach kids about: investing, real estate, financial independence, entrepreneurship",
+          "Your rental properties become generational wealth (can pass to children)",
+          "You've built a life with OPTIONS — that's the ultimate success",
         ],
-      },
-    ],
-    successMetrics: [
-      { metric: "Net worth", target: "$400-500k+", achieved: false },
-      {
-        metric: "Passive income from real estate",
-        target: "$12-18k/year",
-        achieved: false,
-      },
-      { metric: "MSN degree completed", achieved: false },
-      {
-        metric: "Decision made on 20-year retirement vs separation",
-        achieved: false,
-      },
-      {
-        metric: "Legacy plan in place for children's education",
-        achieved: false,
-      },
-    ],
-    decisionPoints: [
-      {
-        title: "Retirement Decision (Age 37-42)",
-        scenario:
-          "After 17+ years of service, you must decide your next chapter",
-        outcome: "Three paths available based on your goals and circumstances",
-        actions: [
-          "Option A: Stay until 20-year retirement (military pension for life)",
-          "Option B: Separate and pursue civilian nursing career ($100-250k/year)",
-          "Option C: Transfer to Guard/Reserve (flexibility + eventual retirement)",
-        ],
-        recommendation:
-          "You'll have OPTIONS. You're not trapped. Choose based on your family's needs and financial goals.",
       },
     ],
   },
 ];
 
-// Calculate overall roadmap statistics
-export function getRoadmapStats() {
-  const totalPhases = roadmapPhases.length;
-  const activePhases = roadmapPhases.filter(
-    (p) => p.status === "active",
-  ).length;
-  const completedPhases = roadmapPhases.filter(
-    (p) => p.status === "complete",
-  ).length;
-  const upcomingPhases = roadmapPhases.filter(
-    (p) => p.status === "upcoming",
-  ).length;
+export const tasks = [
+  // PHASE 0: PREPARATION
+  {
+    id: "task-0-1",
+    phaseId: "phase-0",
+    title: "Civil marriage with fiancée (Dec 2025)",
+    completed: false,
+    dueDate: "2025-12-06",
+    notes:
+      "Civil ceremony in Dakar or US. Start I-130 petition immediately after. Fiancée is Cape Verdean, currently in Dakar.",
+    position: 0,
+  },
+  {
+    id: "task-0-2",
+    phaseId: "phase-0",
+    title: "File I-130 Petition for Alien Relative",
+    completed: false,
+    dueDate: "2026-01-15",
+    notes:
+      "Start immigration process ASAP after marriage. Processing: 6-12 months. Goal: spouse joins by late 2026/early 2027.",
+    position: 1,
+  },
+  {
+    id: "task-0-3",
+    phaseId: "phase-0",
+    title: "Achieve peak fitness (1.5 mile run <10:30)",
+    completed: false,
+    dueDate: "2026-02-02",
+    notes: "Arrive at BMT in top 25% physically. Sets tone for entire career.",
+    position: 2,
+  },
+  {
+    id: "task-0-4",
+    phaseId: "phase-0",
+    title: "Gather citizenship documents (passport, green card, birth cert)",
+    completed: false,
+    notes: "Store digital + physical copies. Bring to BMT Week 1.",
+    position: 3,
+  },
+  {
+    id: "task-0-5",
+    phaseId: "phase-0",
+    title: "Start studying for Security+ certification",
+    completed: false,
+    notes:
+      "Use Professor Messer (YouTube, free). Security+ is MANDATORY for cyber cross-training.",
+    position: 4,
+  },
+  {
+    id: "task-0-6",
+    phaseId: "phase-0",
+    title: "Save $2-3k emergency fund",
+    completed: false,
+    notes: "Leave with spouse/family for emergencies during BMT.",
+    position: 5,
+  },
 
-  // Find next milestone (first upcoming phase)
-  const nextPhase = roadmapPhases.find(
-    (p) => p.status === "upcoming" || p.status === "active",
-  );
+  // PHASE 1: BMT & CITIZENSHIP
+  {
+    id: "task-1-1",
+    phaseId: "phase-1",
+    title: "Apply for U.S. Citizenship (Week 1 of BMT)",
+    completed: false,
+    notes:
+      "File N-400 and N-426. Track case number. Goal: citizenship by Jun-Dec 2026.",
+    position: 0,
+  },
+  {
+    id: "task-1-2",
+    phaseId: "phase-1",
+    title: "Volunteer for leadership roles (dorm chief, element leader)",
+    completed: false,
+    notes:
+      "BMT performance goes in records. Sets foundation for cross-training application.",
+    position: 1,
+  },
+  {
+    id: "task-1-3",
+    phaseId: "phase-1",
+    title: "Graduate BMT",
+    completed: false,
+    dueDate: "2026-03-31",
+    position: 2,
+  },
+
+  // PHASE 2: TECH SCHOOL
+  {
+    id: "task-2-1",
+    phaseId: "phase-2",
+    title: "Graduate 4N0 tech school (top 25% if possible)",
+    completed: false,
+    dueDate: "2026-08-31",
+    notes: "Strong tech school performance helps cross-training application.",
+    position: 0,
+  },
+  {
+    id: "task-2-2",
+    phaseId: "phase-2",
+    title: "Obtain CCAF transcript",
+    completed: false,
+    notes:
+      "~20-30 credits toward CCAF. Check which credits transfer to bachelor programs.",
+    position: 1,
+  },
+  {
+    id: "task-2-3",
+    phaseId: "phase-2",
+    title: "Reality check: Can I tolerate clinical work?",
+    completed: false,
+    notes:
+      "During clinicals, assess: bedpans, IVs, patient care. If you hate it, pivot plan.",
+    position: 2,
+  },
+  {
+    id: "task-2-4",
+    phaseId: "phase-2",
+    title: "Update DEERS with marriage info",
+    completed: false,
+    notes: 'Add spouse to TRICARE, update BAH to "with dependents" rate.',
+    position: 3,
+  },
+
+  // PHASE 3: FIRST DUTY STATION (BUILD PHASE)
+  {
+    id: "task-3-1",
+    phaseId: "phase-3",
+    title: "Wife arrives in US (command sponsorship approved)",
+    completed: false,
+    dueDate: "2027-03-01",
+    notes:
+      "I-130 processing: 6-12 months. She should arrive by late 2026 or early 2027.",
+    position: 0,
+  },
+  {
+    id: "task-3-2",
+    phaseId: "phase-3",
+    title: "GET SECURITY+ CERTIFICATION (CRITICAL)",
+    completed: false,
+    dueDate: "2027-06-01",
+    notes:
+      "MANDATORY for cyber cross-training. Study: Professor Messer, CompTIA guide. Exam: $400 (TA covers).",
+    position: 1,
+  },
+  {
+    id: "task-3-3",
+    phaseId: "phase-3",
+    title: "Complete 4N0 CDCs within 4 months",
+    completed: false,
+    dueDate: "2027-01-01",
+    notes: "Faster = better EPR. Shows initiative.",
+    position: 2,
+  },
+  {
+    id: "task-3-4",
+    phaseId: "phase-3",
+    title: "Contact WGU: Get preliminary credit evaluation",
+    completed: false,
+    dueDate: "2027-03-01",
+    notes:
+      'Submit SpanTran evaluation. Ask: "How many credits from my French diploma can transfer?"',
+    position: 3,
+  },
+  {
+    id: "task-3-5",
+    phaseId: "phase-3",
+    title: "Enroll at WGU - B.S. Cybersecurity",
+    completed: false,
+    dueDate: "2027-09-01",
+    notes:
+      "Self-paced, competency-based. Goal: finish in 12-24 months. Use TA ($4,500/year).",
+    position: 4,
+  },
+  {
+    id: "task-3-6",
+    phaseId: "phase-3",
+    title: "Get CySA+ certification",
+    completed: false,
+    dueDate: "2027-12-01",
+    notes:
+      "Cybersecurity Analyst+. Adds credits at WGU + strengthens resume. Cost: $400 (TA covers).",
+    position: 5,
+  },
+  {
+    id: "task-3-7",
+    phaseId: "phase-3",
+    title: "Get CEH certification",
+    completed: false,
+    dueDate: "2028-06-01",
+    notes:
+      "Certified Ethical Hacker. Strengthens cyber cross-training package. Cost: $1,200 (TA covers).",
+    position: 6,
+  },
+  {
+    id: "task-3-8",
+    phaseId: "phase-3",
+    title: "Study for EDPT (cyber aptitude test)",
+    completed: false,
+    dueDate: "2028-06-01",
+    notes:
+      "Required for 1B4X1 cross-training. Practice online. Goal: score 70+.",
+    position: 7,
+  },
+  {
+    id: "task-3-9",
+    phaseId: "phase-3",
+    title: "Buy first property (if CONUS) OR save $50k (if OCONUS)",
+    completed: false,
+    dueDate: "2028-03-01",
+    notes:
+      "VA loan (0% down). Target: duplex/triplex. Live in 1 unit, rent others. If OCONUS: save aggressively.",
+    position: 8,
+  },
+  {
+    id: "task-3-10",
+    phaseId: "phase-3",
+    title: "Launch side business (e-commerce, consulting, freelance)",
+    completed: false,
+    dueDate: "2027-06-01",
+    notes:
+      "Start small: $500-1,000/month. Scale to $3-5k/month by 2032. This is KEY to financial independence.",
+    position: 9,
+  },
+  {
+    id: "task-3-11",
+    phaseId: "phase-3",
+    title: "Promote to SSgt (E-5)",
+    completed: false,
+    dueDate: "2028-09-01",
+    notes:
+      "Test for SSgt at ~3 years TIS. Making E-5 strengthens cross-training package.",
+    position: 10,
+  },
+  {
+    id: "task-3-12",
+    phaseId: "phase-3",
+    title: "Submit cross-training application (1B4X1 or 1D7X1)",
+    completed: false,
+    dueDate: "2028-09-01",
+    notes:
+      "FTA window: 35-43 months TIS (Jan-Sep 2029). Apply 6 months early (Jul-Sep 2028). Requires: Security+, EDPT, commander rec.",
+    position: 11,
+  },
+  {
+    id: "task-3-13",
+    phaseId: "phase-3",
+    title: "Finish Bachelor in Cybersecurity",
+    completed: false,
+    dueDate: "2029-06-01",
+    notes:
+      "WGU self-paced. If you hustle, finish in 12-18 months. This is CRITICAL regardless of cross-training outcome.",
+    position: 12,
+  },
+
+  // PHASE 4A: CYBER TRACK (IF CROSS-TRAIN APPROVED)
+  {
+    id: "task-4a-1",
+    phaseId: "phase-4a",
+    title: "Attend cyber tech school (Keesler AFB or Goodfellow AFB)",
+    completed: false,
+    dueDate: "2029-08-01",
+    notes:
+      "1B4X1: 6 months. 1D7X1: 4-6 months. Training: offensive/defensive cyber ops.",
+    position: 0,
+  },
+  {
+    id: "task-4a-2",
+    phaseId: "phase-4a",
+    title: "Work as cyber operator (NSA, Cyber Command, base comm)",
+    completed: false,
+    notes:
+      "Build hands-on experience. Get more certs (CISSP, OSCP). Continue real estate + business.",
+    position: 1,
+  },
+  {
+    id: "task-4a-3",
+    phaseId: "phase-4a",
+    title: "Buy property #2 at next duty station",
+    completed: false,
+    dueDate: "2030-06-01",
+    notes: "Continue house-hacking strategy. VA loan or conventional.",
+    position: 2,
+  },
+  {
+    id: "task-4a-4",
+    phaseId: "phase-4a",
+    title: "Apply for 17D Cyber Warfare Officer commission",
+    completed: false,
+    dueDate: "2031-06-01",
+    notes:
+      "Requirements: Bachelor in cyber ✅, citizenship ✅, TS clearance ✅, cyber experience ✅. Acceptance: 40-60%.",
+    position: 3,
+  },
+  {
+    id: "task-4a-5",
+    phaseId: "phase-4a",
+    title: "Commission as O-1 (if 17D approved) OR stay enlisted E-6/E-7",
+    completed: false,
+    notes:
+      "Either way: continue building wealth. Officer = higher income. Enlisted = more time for business.",
+    position: 4,
+  },
+
+  // PHASE 4B: WEALTH BUILDER TRACK (IF CROSS-TRAIN DENIED)
+  {
+    id: "task-4b-1",
+    phaseId: "phase-4b",
+    title: "Stay 4N0, promote to E-6 (TSgt)",
+    completed: false,
+    dueDate: "2031-01-01",
+    notes:
+      "Focus on work-life balance. Minimize stress. Maximize time for business.",
+    position: 0,
+  },
+  {
+    id: "task-4b-2",
+    phaseId: "phase-4b",
+    title: "Buy property #2, #3, #4 at each PCS",
+    completed: false,
+    notes:
+      "Every 3-4 years = new base = new property. Goal: 4 properties by 2036.",
+    position: 1,
+  },
+  {
+    id: "task-4b-3",
+    phaseId: "phase-4b",
+    title: "Scale side business to $3-5k/month",
+    completed: false,
+    dueDate: "2033-01-01",
+    notes:
+      "E-commerce, real estate wholesaling, consulting, freelance - whatever works. This is your path to FI.",
+    position: 2,
+  },
+  {
+    id: "task-4b-4",
+    phaseId: "phase-4b",
+    title: "Promote to E-7 (MSgt)",
+    completed: false,
+    dueDate: "2035-01-01",
+    notes: "Steady income, good benefits, low stress. Keep building wealth.",
+    position: 3,
+  },
+  {
+    id: "task-4b-5",
+    phaseId: "phase-4b",
+    title: "Optional: Apply for 17D without cyber experience",
+    completed: false,
+    notes:
+      "You have bachelor in cybersecurity. Can apply for direct commission. Acceptance: 20-40% (lower without experience).",
+    position: 4,
+  },
+
+  // PHASE 5: FINANCIAL INDEPENDENCE
+  {
+    id: "task-5-1",
+    phaseId: "phase-5",
+    title: "Achieve $60-90k/year passive income",
+    completed: false,
+    notes:
+      "Rentals: $30-50k/year. Business: $30-50k/year. Total: $60-100k/year. You are financially independent.",
+    position: 0,
+  },
+  {
+    id: "task-5-2",
+    phaseId: "phase-5",
+    title: "Decide: Stay military OR separate",
+    completed: false,
+    notes:
+      "At FI, you have OPTIONS. Stay for pension? Separate for civilian tech job ($100-250k)? Full-time entrepreneur?",
+    position: 1,
+  },
+  {
+    id: "task-5-3",
+    phaseId: "phase-5",
+    title: "Transfer GI Bill to kids (if you have them)",
+    completed: false,
+    notes:
+      "After 10 years service, can transfer benefits. Worth $100k+ per child.",
+    position: 2,
+  },
+  {
+    id: "task-5-4",
+    phaseId: "phase-5",
+    title: "Live the life YOU choose",
+    completed: false,
+    notes: "Financial freedom = life freedom. You built this. Enjoy it.",
+    position: 3,
+  },
+];
+
+export const milestones = [
+  {
+    id: "milestone-1",
+    title: "Civil Marriage with Fiancée",
+    date: "2025-12-06",
+    completed: false,
+    phaseId: "phase-0",
+  },
+  {
+    id: "milestone-2",
+    title: "Ship Date - BMT Begins",
+    date: "2026-02-03",
+    completed: false,
+    phaseId: "phase-1",
+  },
+  {
+    id: "milestone-3",
+    title: "U.S. Citizenship Granted",
+    date: "2026-08-01",
+    completed: false,
+    phaseId: "phase-2",
+  },
+  {
+    id: "milestone-4",
+    title: "Wife Arrives in US",
+    date: "2027-03-01",
+    completed: false,
+    phaseId: "phase-3",
+  },
+  {
+    id: "milestone-5",
+    title: "Security+ Certification Earned",
+    date: "2027-06-01",
+    completed: false,
+    phaseId: "phase-3",
+  },
+  {
+    id: "milestone-6",
+    title: "First Property Purchased",
+    date: "2028-03-01",
+    completed: false,
+    phaseId: "phase-3",
+  },
+  {
+    id: "milestone-7",
+    title: "Bachelor in Cybersecurity Completed",
+    date: "2029-06-01",
+    completed: false,
+    phaseId: "phase-3",
+  },
+  {
+    id: "milestone-8",
+    title: "Cross-Training Decision (Cyber Approved or Denied)",
+    date: "2029-01-01",
+    completed: false,
+    phaseId: "phase-3",
+  },
+  {
+    id: "milestone-9",
+    title: "28th Birthday",
+    date: "2025-12-06",
+    completed: false,
+  },
+  {
+    id: "milestone-10",
+    title: "30th Birthday",
+    date: "2028-12-06",
+    completed: false,
+  },
+  {
+    id: "milestone-11",
+    title: "35th Birthday",
+    date: "2033-12-06",
+    completed: false,
+  },
+  {
+    id: "milestone-12",
+    title: "Financial Independence Achieved (Age 37-38)",
+    date: "2036-01-01",
+    completed: false,
+    phaseId: "phase-5",
+  },
+];
+
+// Export aliases for compatibility
+export const roadmapPhases = phases;
+
+// Helper function to get roadmap statistics
+export function getRoadmapStats() {
+  const totalTasks = tasks.length;
+  const completedTasks = tasks.filter((t) => t.completed).length;
+  const completionPercentage =
+    totalTasks > 0 ? Math.round((completedTasks / totalTasks) * 100) : 0;
+
+  const totalMilestones = milestones.length;
+  const completedMilestones = milestones.filter((m) => m.completed).length;
+
+  const activePhases = phases.filter((p) => p.status === "active").length;
+  const upcomingPhases = phases.filter((p) => p.status === "upcoming").length;
+  const completedPhases = phases.filter((p) => p.status === "complete").length;
+
+  // Find next upcoming milestone
+  const today = new Date();
+  const upcomingMilestones = milestones
+    .filter((m) => !m.completed && new Date(m.date) >= today)
+    .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+  const nextMilestone = upcomingMilestones[0]
+    ? { title: upcomingMilestones[0].title, date: upcomingMilestones[0].date }
+    : undefined;
 
   return {
-    totalPhases,
+    totalTasks,
+    completedTasks,
+    completionPercentage,
+    totalMilestones,
+    completedMilestones,
     activePhases,
-    completedPhases,
     upcomingPhases,
-    nextMilestone: nextPhase
-      ? {
-          title: nextPhase.name,
-          date: nextPhase.start_date,
-        }
-      : undefined,
+    completedPhases,
+    totalPhases: phases.length,
+    nextMilestone,
   };
 }

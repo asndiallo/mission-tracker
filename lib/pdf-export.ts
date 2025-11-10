@@ -29,7 +29,7 @@ export async function generateMissionPlanPDF(
   pdf.setFontSize(12);
   pdf.setFont("helvetica", "normal");
   pdf.text(
-    "Air Force Aerospace Medic → Nurse Corps Officer → CRNA",
+    "Financial Independence via Real Estate + Cybersecurity (Optional: 17D Cyber Officer)",
     105,
     yPosition,
     { align: "center" },

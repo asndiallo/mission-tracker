@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import {
   DollarSign,
@@ -7,32 +7,32 @@ import {
   Target,
   Wifi,
   WifiOff,
-} from 'lucide-react';
-import { useCallback, useEffect, useState } from 'react';
-import { AuthForm } from '@/components/AuthForm';
-import { FinancialDashboard } from '@/components/FinancialDashboard';
-import { Header } from '@/components/Header';
-import { KeyMetrics } from '@/components/KeyMetrics';
-import { MilestoneDialog } from '@/components/MilestoneDialog';
-import { MilestoneList } from '@/components/MilestoneList';
-import { PhaseDialog } from '@/components/PhaseDialog';
-import { PhaseTimeline } from '@/components/PhaseTimeline';
-import { RoadmapDashboard } from '@/components/RoadmapDashboard';
-import { SeedDataButton } from '@/components/SeedDataButton';
-import { ShipDateCountdown } from '@/components/ShipDateCountdown';
-import { TaskDialog } from '@/components/TaskDialog';
-import { TaskList } from '@/components/TaskList';
-import { TodayNextStep } from '@/components/TodayNextStep';
-import { Button } from '@/components/ui/button';
-import { getRoadmapStats, roadmapPhases } from '@/lib/roadmapData';
-import { registerServiceWorker } from '@/lib/serviceWorker';
-import { networkStatus, storage } from '@/lib/storage';
+} from "lucide-react";
+import { useCallback, useEffect, useState } from "react";
+import { AuthForm } from "@/components/AuthForm";
+import { FinancialDashboard } from "@/components/FinancialDashboard";
+import { Header } from "@/components/Header";
+import { KeyMetrics } from "@/components/KeyMetrics";
+import { MilestoneDialog } from "@/components/MilestoneDialog";
+import { MilestoneList } from "@/components/MilestoneList";
+import { PhaseDialog } from "@/components/PhaseDialog";
+import { PhaseTimeline } from "@/components/PhaseTimeline";
+import { RoadmapDashboard } from "@/components/RoadmapDashboard";
+import { SeedDataButton } from "@/components/SeedDataButton";
+import { ShipDateCountdown } from "@/components/ShipDateCountdown";
+import { TaskDialog } from "@/components/TaskDialog";
+import { TaskList } from "@/components/TaskList";
+import { TodayNextStep } from "@/components/TodayNextStep";
+import { Button } from "@/components/ui/button";
+import { getRoadmapStats, roadmapPhases } from "@/lib/roadmapData";
+import { registerServiceWorker } from "@/lib/serviceWorker";
+import { networkStatus, storage } from "@/lib/storage";
 import {
   type Milestone,
   type Phase,
   supabase,
   type Task,
-} from '@/lib/supabase';
+} from "@/lib/supabase";
 
 export default function Home() {
   const [phases, setPhases] = useState<Phase[]>([]);
@@ -45,8 +45,8 @@ export default function Home() {
   const [taskDialogOpen, setTaskDialogOpen] = useState(false);
   const [phaseDialogOpen, setPhaseDialogOpen] = useState(false);
   const [activeTab, setActiveTab] = useState<
-    'mission' | 'roadmap' | 'finances'
-  >('mission');
+    "mission" | "roadmap" | "finances"
+  >("mission");
   const [todayNextStepOpen, setTodayNextStepOpen] = useState(false);
   const [focusMode, setFocusMode] = useState(false);
   const [isOnline, setIsOnline] = useState(true);
@@ -72,9 +72,12 @@ export default function Home() {
 
     try {
       const [phasesRes, tasksRes, milestonesRes] = await Promise.all([
-        supabase.from('phases').select('*').order('position'),
-        supabase.from('tasks').select('*').order('position'),
-        supabase.from('milestones').select('*').order('date'),
+        supabase.from("phases").select("*").order("position"),
+        supabase
+          .from("tasks")
+          .select("*")
+          .order("due_date", { ascending: true, nullsFirst: false }),
+        supabase.from("milestones").select("*").order("date"),
       ]);
 
       if (phasesRes.data) {
@@ -92,7 +95,7 @@ export default function Home() {
 
       setLastSync(new Date());
     } catch (error) {
-      console.error('Failed to load data:', error);
+      console.error("Failed to load data:", error);
       // Fall back to cached data on error
       if (storage.hasOfflineData()) {
         setPhases(storage.getPhases());
@@ -159,7 +162,7 @@ export default function Home() {
       setUser(session?.user ?? null);
       if (session?.user) {
         // Only open dialog on SIGNED_IN event, not on TOKEN_REFRESHED or other events
-        const shouldOpenDialog = event === 'SIGNED_IN';
+        const shouldOpenDialog = event === "SIGNED_IN";
         loadData(shouldOpenDialog);
       }
     });
@@ -188,15 +191,15 @@ export default function Home() {
     : tasks;
 
   const handleTaskComplete = async (taskId: string) => {
-    await supabase.from('tasks').update({ completed: true }).eq('id', taskId);
+    await supabase.from("tasks").update({ completed: true }).eq("id", taskId);
     loadData();
   };
 
   const handleMilestoneComplete = async (milestoneId: string) => {
     await supabase
-      .from('milestones')
+      .from("milestones")
       .update({ completed: true })
-      .eq('id', milestoneId);
+      .eq("id", milestoneId);
     loadData();
   };
 
@@ -225,11 +228,11 @@ export default function Home() {
       <div className="mb-6 flex gap-2 border-b items-center flex-wrap">
         <button
           type="button"
-          onClick={() => setActiveTab('mission')}
+          onClick={() => setActiveTab("mission")}
           className={`px-4 py-2 font-medium flex items-center gap-2 border-b-2 transition-colors ${
-            activeTab === 'mission'
-              ? 'border-blue-600 text-blue-600'
-              : 'border-transparent text-slate-600 hover:text-slate-900'
+            activeTab === "mission"
+              ? "border-blue-600 text-blue-600"
+              : "border-transparent text-slate-600 hover:text-slate-900"
           }`}
         >
           <Target className="h-4 w-4" />
@@ -237,11 +240,11 @@ export default function Home() {
         </button>
         <button
           type="button"
-          onClick={() => setActiveTab('roadmap')}
+          onClick={() => setActiveTab("roadmap")}
           className={`px-4 py-2 font-medium flex items-center gap-2 border-b-2 transition-colors ${
-            activeTab === 'roadmap'
-              ? 'border-blue-600 text-blue-600'
-              : 'border-transparent text-slate-600 hover:text-slate-900'
+            activeTab === "roadmap"
+              ? "border-blue-600 text-blue-600"
+              : "border-transparent text-slate-600 hover:text-slate-900"
           }`}
         >
           <MapIcon className="h-4 w-4" />
@@ -249,11 +252,11 @@ export default function Home() {
         </button>
         <button
           type="button"
-          onClick={() => setActiveTab('finances')}
+          onClick={() => setActiveTab("finances")}
           className={`px-4 py-2 font-medium flex items-center gap-2 border-b-2 transition-colors ${
-            activeTab === 'finances'
-              ? 'border-blue-600 text-blue-600'
-              : 'border-transparent text-slate-600 hover:text-slate-900'
+            activeTab === "finances"
+              ? "border-blue-600 text-blue-600"
+              : "border-transparent text-slate-600 hover:text-slate-900"
           }`}
         >
           <DollarSign className="h-4 w-4" />
@@ -267,7 +270,7 @@ export default function Home() {
               <WifiOff className="h-4 w-4 text-orange-500" />
             )}
             <span className="hidden sm:inline">
-              {isOnline ? 'Online' : 'Offline'}
+              {isOnline ? "Online" : "Offline"}
             </span>
           </div>
           <Button
@@ -285,16 +288,16 @@ export default function Home() {
               setFocusMode(newFocusMode);
               storage.setFocusMode(newFocusMode);
             }}
-            variant={focusMode ? 'default' : 'outline'}
+            variant={focusMode ? "default" : "outline"}
             size="sm"
           >
-            {focusMode ? 'Show All' : 'Focus Mode'}
+            {focusMode ? "Show All" : "Focus Mode"}
           </Button>
         </div>
       </div>
 
       {/* Mission Plan Tab */}
-      {activeTab === 'mission' && (
+      {activeTab === "mission" && (
         <>
           {!focusMode && <ShipDateCountdown shipDate="2026-02-03" />}
           <KeyMetrics tasks={tasks} />
@@ -329,12 +332,12 @@ export default function Home() {
               <div className="flex items-center justify-between mb-4">
                 <h2 className="text-2xl font-semibold">
                   {focusMode
-                    ? 'Active Tasks'
+                    ? "Active Tasks"
                     : selectedPhaseId
-                    ? `Tasks - ${
-                        phases.find((p) => p.id === selectedPhaseId)?.name
-                      }`
-                    : 'All Tasks'}
+                      ? `Tasks - ${
+                          phases.find((p) => p.id === selectedPhaseId)?.name
+                        }`
+                      : "All Tasks"}
                 </h2>
                 <Button onClick={() => setTaskDialogOpen(true)} size="sm">
                   <Plus className="h-4 w-4 mr-1" />
@@ -356,7 +359,7 @@ export default function Home() {
             <div>
               <div className="flex items-center justify-between mb-4">
                 <h2 className="text-2xl font-semibold">
-                  {focusMode ? 'Upcoming Milestones' : 'Key Milestones'}
+                  {focusMode ? "Upcoming Milestones" : "Key Milestones"}
                 </h2>
                 <Button onClick={() => setMilestoneDialogOpen(true)} size="sm">
                   <Plus className="h-4 w-4 mr-1" />
@@ -402,7 +405,7 @@ export default function Home() {
       )}
 
       {/* Roadmap Tab */}
-      {activeTab === 'roadmap' && (
+      {activeTab === "roadmap" && (
         <RoadmapDashboard
           phases={roadmapPhases}
           stats={getRoadmapStats()}
@@ -411,7 +414,7 @@ export default function Home() {
       )}
 
       {/* Finances Tab */}
-      {activeTab === 'finances' && <FinancialDashboard userId={user!.id} />}
+      {activeTab === "finances" && <FinancialDashboard userId={user!.id} />}
     </main>
   );
 }

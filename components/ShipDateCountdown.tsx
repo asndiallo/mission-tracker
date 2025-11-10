@@ -1,10 +1,11 @@
 "use client";
 
+import { Card, CardContent } from "@/components/ui/card";
+import { daysUntil, formatDate } from "@/lib/utils/dates";
 import { differenceInYears, parseISO } from "date-fns";
 import { useEffect, useState } from "react";
-import { Card, CardContent } from "@/components/ui/card";
+
 import { Progress } from "@/components/ui/progress";
-import { daysUntil, formatDate } from "@/lib/utils/dates";
 
 interface Props {
   shipDate: string;
@@ -69,8 +70,8 @@ export function ShipDateCountdown({ shipDate }: Props) {
           <div className="mt-4 text-xs opacity-75">
             <p>Born {formatDate(birthDate)}</p>
             <p className="mt-1">
-              By 2035 (age 37): 9 years of service | Target: CRNA Officer
-              (O-3/O-4)
+              By 2036 (age 37-38): Financial Independence | $60-90k/year passive
+              income
             </p>
           </div>
         </div>

@@ -17,9 +17,14 @@ export function KeyMetrics({ tasks }: Props) {
 
   // Key milestones
   const keyAchievements = [
-    { name: "Prerequisites Complete", target: 31, current: 0, unit: "credits" },
+    {
+      name: "Certifications Earned",
+      target: 3,
+      current: 0,
+      unit: "certs (Sec+, CySA+, CEH)",
+    },
     { name: "Properties Owned", target: 4, current: 0, unit: "properties" },
-    { name: "Years of Service", target: 9, current: 0, unit: "years" },
+    { name: "Years of Service", target: 10, current: 0, unit: "years" },
     { name: "Net Worth", target: 500000, current: 0, unit: "USD" },
   ];
 
