@@ -3,7 +3,11 @@
     "allow": [
       "Bash(npm run lint:*)",
       "Bash(npx biome check:*)",
-      "Bash(npm run build:*)"
+      "Bash(npm run build:*)",
+      "Bash(bun run lint)",
+      "Bash(bun run format:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)"
     ],
     "deny": [],
     "ask": []

@@ -88,3 +88,67 @@ export type Asset = {
   created_at: string;
   updated_at: string;
 };
+
+export type Envelope = {
+  id: string;
+  user_id: string;
+  name: string;
+  color: string;
+  allocation_amount: number;
+  allocation_period: "monthly" | "biweekly" | "weekly" | "yearly" | "custom";
+  allocation_start_date: string;
+  allocation_days: number | null;
+  carryover_enabled: boolean;
+  position: number;
+  created_at: string;
+  updated_at: string;
+};
+
+export type Transaction = {
+  id: string;
+  user_id: string;
+  transaction_date: string;
+  clearing_date: string | null;
+  description: string;
+  merchant: string | null;
+  category: string | null;
+  transaction_type: "expense" | "income" | "payment" | "transfer";
+  amount: number;
+  envelope_id: string | null;
+  account_id: string | null;
+  imported_from: string | null;
+  notes: string | null;
+  created_at: string;
+  updated_at: string;
+};
+
+export type CSVImportTemplate = {
+  id: string;
+  user_id: string;
+  bank_name: string;
+  template_name: string;
+  column_mapping: {
+    transaction_date: number;
+    clearing_date?: number;
+    description: number;
+    merchant?: number;
+    category?: number;
+    amount: number;
+    purchaser?: number;
+  };
+  date_format: string;
+  amount_multiplier: number;
+  created_at: string;
+};
+
+export type BudgetPeriod = {
+  id: string;
+  user_id: string;
+  envelope_id: string;
+  period_start: string;
+  period_end: string;
+  allocated_amount: number;
+  spent_amount: number;
+  carried_over: number;
+  created_at: string;
+};

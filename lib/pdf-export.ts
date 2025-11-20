@@ -290,7 +290,11 @@ export async function generateMissionPlanPDF(
         headStyles: { fillColor: [59, 130, 246] },
       });
 
-      yPosition = (pdf as any).lastAutoTable.finalY + 10;
+      yPosition = (pdf as jsPDF & { lastAutoTable?: { finalY: number } })
+        .lastAutoTable?.finalY
+        ? (pdf as jsPDF & { lastAutoTable: { finalY: number } }).lastAutoTable
+            .finalY + 10
+        : yPosition + 10;
     }
 
     // Assets Table
