@@ -102,7 +102,10 @@ export function TransactionTable({
     if (!editingTransaction) return;
     await supabase
       .from("transactions")
-      .update({ envelope_id: envelopeAssignment || null })
+      .update({
+        envelope_id:
+          envelopeAssignment === "unassigned" ? null : envelopeAssignment,
+      })
       .eq("id", editingTransaction.id);
     setEditingTransaction(null);
     onUpdate();
@@ -273,7 +276,7 @@ export function TransactionTable({
                           onClick={() => {
                             setEditingTransaction(transaction);
                             setEnvelopeAssignment(
-                              transaction.envelope_id || "",
+                              transaction.envelope_id || "unassigned",
                             );
                           }}
                           className="p-1 hover:bg-slate-100 rounded"
@@ -336,7 +339,7 @@ export function TransactionTable({
                   <SelectValue placeholder="Select envelope" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="">Unassigned</SelectItem>
+                  <SelectItem value="unassigned">Unassigned</SelectItem>
                   {envelopes.map((env) => (
                     <SelectItem key={env.id} value={env.id}>
                       <div className="flex items-center gap-2">
