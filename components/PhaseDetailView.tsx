@@ -281,7 +281,7 @@ export function PhaseDetailView({ phase, onChecklistToggle }: Props) {
           </CardHeader>
           <CardContent>
             <div className="space-y-3">
-              {phase.successMetrics.map((metric, index) => (
+              {phase.successMetrics.map((metric, _index) => (
                 <div
                   key={metric.metric}
                   className="flex items-start gap-3 p-3 bg-white rounded-lg border border-green-200"

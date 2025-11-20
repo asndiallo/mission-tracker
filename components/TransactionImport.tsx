@@ -342,7 +342,8 @@ export function TransactionImport({
                         <td className="px-3 py-2">
                           <Select
                             value={
-                              selectedEnvelopes[getTransactionKey(t, idx)] || "none"
+                              selectedEnvelopes[getTransactionKey(t, idx)] ||
+                              "none"
                             }
                             onValueChange={(value) =>
                               setSelectedEnvelopes((prev) => ({

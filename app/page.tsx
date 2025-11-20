@@ -178,7 +178,7 @@ export default function Home() {
     return <AuthForm onAuthSuccess={() => loadData(true)} />;
   }
 
-  if (loading) {
+  if (loading || !user) {
     return (
       <div className="flex items-center justify-center min-h-screen">
         <div className="text-lg">Loading...</div>
@@ -302,7 +302,7 @@ export default function Home() {
           {!focusMode && <ShipDateCountdown shipDate="2026-02-03" />}
           <KeyMetrics tasks={tasks} />
 
-          {phases.length === 0 && user && (
+          {phases.length === 0 && (
             <div className="mb-6">
               <SeedDataButton onComplete={loadData} userId={user.id} />
             </div>
@@ -321,7 +321,7 @@ export default function Home() {
                 phases={phases}
                 selectedPhaseId={selectedPhaseId}
                 onSelectPhase={setSelectedPhaseId}
-                userId={user?.id}
+                userId={user.id}
                 onUpdate={loadData}
               />
             </div>
@@ -352,7 +352,7 @@ export default function Home() {
                 }
                 phases={phases}
                 onUpdate={loadData}
-                userId={user?.id}
+                userId={user.id}
               />
             </div>
 
@@ -374,7 +374,7 @@ export default function Home() {
                 }
                 phases={phases}
                 onUpdate={loadData}
-                userId={user?.id}
+                userId={user.id}
               />
             </div>
           </div>
@@ -384,14 +384,14 @@ export default function Home() {
             onOpenChange={setTaskDialogOpen}
             onSuccess={loadData}
             phases={phases}
-            userId={user?.id}
+            userId={user.id}
           />
 
           <PhaseDialog
             open={phaseDialogOpen}
             onOpenChange={setPhaseDialogOpen}
             onSuccess={loadData}
-            userId={user?.id}
+            userId={user.id}
           />
 
           <MilestoneDialog
@@ -399,7 +399,7 @@ export default function Home() {
             onOpenChange={setMilestoneDialogOpen}
             onSuccess={loadData}
             phases={phases}
-            userId={user?.id}
+            userId={user.id}
           />
         </>
       )}
@@ -414,7 +414,7 @@ export default function Home() {
       )}
 
       {/* Finances Tab */}
-      {activeTab === "finances" && <FinancialDashboard userId={user?.id} />}
+      {activeTab === "finances" && <FinancialDashboard userId={user.id} />}
     </main>
   );
 }
