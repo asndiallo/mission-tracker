@@ -321,7 +321,7 @@ export default function Home() {
                 phases={phases}
                 selectedPhaseId={selectedPhaseId}
                 onSelectPhase={setSelectedPhaseId}
-                userId={user!.id}
+                userId={user?.id}
                 onUpdate={loadData}
               />
             </div>
@@ -352,7 +352,7 @@ export default function Home() {
                 }
                 phases={phases}
                 onUpdate={loadData}
-                userId={user!.id}
+                userId={user?.id}
               />
             </div>
 
@@ -374,7 +374,7 @@ export default function Home() {
                 }
                 phases={phases}
                 onUpdate={loadData}
-                userId={user!.id}
+                userId={user?.id}
               />
             </div>
           </div>
@@ -384,14 +384,14 @@ export default function Home() {
             onOpenChange={setTaskDialogOpen}
             onSuccess={loadData}
             phases={phases}
-            userId={user!.id}
+            userId={user?.id}
           />
 
           <PhaseDialog
             open={phaseDialogOpen}
             onOpenChange={setPhaseDialogOpen}
             onSuccess={loadData}
-            userId={user!.id}
+            userId={user?.id}
           />
 
           <MilestoneDialog
@@ -399,7 +399,7 @@ export default function Home() {
             onOpenChange={setMilestoneDialogOpen}
             onSuccess={loadData}
             phases={phases}
-            userId={user!.id}
+            userId={user?.id}
           />
         </>
       )}
@@ -414,7 +414,7 @@ export default function Home() {
       )}
 
       {/* Finances Tab */}
-      {activeTab === "finances" && <FinancialDashboard userId={user!.id} />}
+      {activeTab === "finances" && <FinancialDashboard userId={user?.id} />}
     </main>
   );
 }

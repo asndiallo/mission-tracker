@@ -98,7 +98,7 @@ export function MetricsCard({
         <div className="space-y-3">
           {metrics.map((metric, index) => (
             <div
-              key={index}
+              key={`${index}-${metric.metric}`}
               className={cn(
                 "flex items-start gap-3 p-3 rounded-lg border transition-all",
                 metric.achieved

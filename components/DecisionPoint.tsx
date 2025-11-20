@@ -43,7 +43,7 @@ export function DecisionPoint({
         <div className="space-y-6">
           {branches.map((branch, index) => (
             <div
-              key={index}
+              key={`${index}-${branch.title}`}
               className="relative border-l-4 border-l-orange-500 pl-4"
             >
               {/* Branch Header */}
@@ -87,7 +87,7 @@ export function DecisionPoint({
                   <div className="space-y-2">
                     {branch.actions.map((action, actionIndex) => (
                       <div
-                        key={actionIndex}
+                        key={`${actionIndex}-${action}`}
                         className="flex items-start gap-2 text-sm text-slate-700 bg-white p-2 rounded border border-slate-200"
                       >
                         <ArrowRight className="h-4 w-4 text-orange-500 mt-0.5 shrink-0" />

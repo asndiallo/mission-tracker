@@ -50,7 +50,7 @@ export function KeyMetrics({ tasks }: Props) {
 
       {/* Quick Stats */}
       {keyAchievements.slice(0, 3).map((achievement, index) => (
-        <Card key={index}>
+        <Card key={`${index}-${achievement.name}`}>
           <CardHeader className="pb-3">
             <CardTitle className="text-sm font-medium text-slate-600">
               {achievement.name}

@@ -3,9 +3,11 @@
 import {
   CreditCard,
   DollarSign,
+  PiggyBank,
   Plus,
   TrendingDown,
   TrendingUp,
+  Wallet,
 } from "lucide-react";
 import { useCallback, useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
@@ -16,6 +18,7 @@ import { AccountDialog } from "./AccountDialog";
 import { AccountList } from "./AccountList";
 import { AssetDialog } from "./AssetDialog";
 import { AssetList } from "./AssetList";
+import { BudgetDashboard } from "./BudgetDashboard";
 import { SeedFinancialDataButton } from "./SeedFinancialDataButton";
 
 interface Props {
@@ -28,6 +31,9 @@ export function FinancialDashboard({ userId }: Props) {
   const [loading, setLoading] = useState(true);
   const [accountDialogOpen, setAccountDialogOpen] = useState(false);
   const [assetDialogOpen, setAssetDialogOpen] = useState(false);
+  const [activeView, setActiveView] = useState<"networth" | "budget">(
+    "networth",
+  );
 
   const loadData = useCallback(async () => {
     setLoading(true);
@@ -99,196 +105,250 @@ export function FinancialDashboard({ userId }: Props) {
 
   return (
     <div className="space-y-6">
-      {/* Summary Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium text-slate-600">
-              Net Worth
-            </CardTitle>
-            <DollarSign className="h-4 w-4 text-slate-600" />
-          </CardHeader>
-          <CardContent>
-            <div
-              className={`text-2xl font-bold ${
-                netWorth >= 0 ? "text-green-600" : "text-red-600"
-              }`}
-            >
-              {formatCurrency(netWorth)}
-            </div>
-            <p className="text-xs text-slate-600 mt-1">Assets - Liabilities</p>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium text-slate-600">
-              Total Assets
-            </CardTitle>
-            <TrendingUp className="h-4 w-4 text-green-600" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold text-green-600">
-              {formatCurrency(totalAssets)}
-            </div>
-            <p className="text-xs text-slate-600 mt-1">
-              Cash + Investments + Assets
-            </p>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium text-slate-600">
-              Total Liabilities
-            </CardTitle>
-            <TrendingDown className="h-4 w-4 text-red-600" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold text-red-600">
-              {formatCurrency(totalLiabilities)}
-            </div>
-            <p className="text-xs text-slate-600 mt-1">Credit Cards + Loans</p>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium text-slate-600">
-              Liquid Cash
-            </CardTitle>
-            <CreditCard className="h-4 w-4 text-blue-600" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold text-blue-600">
-              {formatCurrency(checking + savings)}
-            </div>
-            <p className="text-xs text-slate-600 mt-1">Checking + Savings</p>
-          </CardContent>
-        </Card>
+      {/* Sub-navigation */}
+      <div className="flex gap-2 border-b">
+        <button
+          type="button"
+          onClick={() => setActiveView("networth")}
+          className={`px-4 py-2 font-medium flex items-center gap-2 border-b-2 transition-colors ${
+            activeView === "networth"
+              ? "border-blue-600 text-blue-600"
+              : "border-transparent text-slate-600 hover:text-slate-900"
+          }`}
+        >
+          <Wallet className="h-4 w-4" />
+          Net Worth
+        </button>
+        <button
+          type="button"
+          onClick={() => setActiveView("budget")}
+          className={`px-4 py-2 font-medium flex items-center gap-2 border-b-2 transition-colors ${
+            activeView === "budget"
+              ? "border-blue-600 text-blue-600"
+              : "border-transparent text-slate-600 hover:text-slate-900"
+          }`}
+        >
+          <PiggyBank className="h-4 w-4" />
+          Budget Tracker
+        </button>
       </div>
 
-      {/* Breakdown */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-lg">Cash Accounts</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-2">
-            <div className="flex justify-between">
-              <span className="text-sm text-slate-600">Checking</span>
-              <span className="font-semibold">{formatCurrency(checking)}</span>
-            </div>
-            <div className="flex justify-between">
-              <span className="text-sm text-slate-600">Savings</span>
-              <span className="font-semibold">{formatCurrency(savings)}</span>
-            </div>
-            <div className="flex justify-between pt-2 border-t">
-              <span className="text-sm font-semibold">Total Cash</span>
-              <span className="font-bold">
-                {formatCurrency(checking + savings)}
-              </span>
-            </div>
-          </CardContent>
-        </Card>
+      {/* Budget View */}
+      {activeView === "budget" && <BudgetDashboard userId={userId} />}
 
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-lg">Investments</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-2">
-            <div className="flex justify-between">
-              <span className="text-sm text-slate-600">Roth IRA</span>
-              <span className="font-semibold">
-                {formatCurrency(
-                  accounts
-                    .filter((a) => a.account_type === "roth_ira")
-                    .reduce((sum, a) => sum + Number(a.current_balance), 0),
-                )}
-              </span>
-            </div>
-            <div className="flex justify-between">
-              <span className="text-sm text-slate-600">Brokerage</span>
-              <span className="font-semibold">
-                {formatCurrency(
-                  accounts
-                    .filter((a) => a.account_type === "brokerage")
-                    .reduce((sum, a) => sum + Number(a.current_balance), 0),
-                )}
-              </span>
-            </div>
-            <div className="flex justify-between pt-2 border-t">
-              <span className="text-sm font-semibold">Total Investments</span>
-              <span className="font-bold">{formatCurrency(investments)}</span>
-            </div>
-          </CardContent>
-        </Card>
+      {/* Net Worth View */}
+      {activeView === "networth" && (
+        <>
+          {/* Summary Cards */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            <Card>
+              <CardHeader className="flex flex-row items-center justify-between pb-2">
+                <CardTitle className="text-sm font-medium text-slate-600">
+                  Net Worth
+                </CardTitle>
+                <DollarSign className="h-4 w-4 text-slate-600" />
+              </CardHeader>
+              <CardContent>
+                <div
+                  className={`text-2xl font-bold ${
+                    netWorth >= 0 ? "text-green-600" : "text-red-600"
+                  }`}
+                >
+                  {formatCurrency(netWorth)}
+                </div>
+                <p className="text-xs text-slate-600 mt-1">
+                  Assets - Liabilities
+                </p>
+              </CardContent>
+            </Card>
 
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-lg">Debt</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-2">
-            <div className="flex justify-between">
-              <span className="text-sm text-slate-600">Credit Cards</span>
-              <span className="font-semibold text-red-600">
-                {formatCurrency(creditCardDebt)}
-              </span>
+            <Card>
+              <CardHeader className="flex flex-row items-center justify-between pb-2">
+                <CardTitle className="text-sm font-medium text-slate-600">
+                  Total Assets
+                </CardTitle>
+                <TrendingUp className="h-4 w-4 text-green-600" />
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold text-green-600">
+                  {formatCurrency(totalAssets)}
+                </div>
+                <p className="text-xs text-slate-600 mt-1">
+                  Cash + Investments + Assets
+                </p>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader className="flex flex-row items-center justify-between pb-2">
+                <CardTitle className="text-sm font-medium text-slate-600">
+                  Total Liabilities
+                </CardTitle>
+                <TrendingDown className="h-4 w-4 text-red-600" />
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold text-red-600">
+                  {formatCurrency(totalLiabilities)}
+                </div>
+                <p className="text-xs text-slate-600 mt-1">
+                  Credit Cards + Loans
+                </p>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader className="flex flex-row items-center justify-between pb-2">
+                <CardTitle className="text-sm font-medium text-slate-600">
+                  Liquid Cash
+                </CardTitle>
+                <CreditCard className="h-4 w-4 text-blue-600" />
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold text-blue-600">
+                  {formatCurrency(checking + savings)}
+                </div>
+                <p className="text-xs text-slate-600 mt-1">
+                  Checking + Savings
+                </p>
+              </CardContent>
+            </Card>
+          </div>
+
+          {/* Breakdown */}
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-lg">Cash Accounts</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-2">
+                <div className="flex justify-between">
+                  <span className="text-sm text-slate-600">Checking</span>
+                  <span className="font-semibold">
+                    {formatCurrency(checking)}
+                  </span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-sm text-slate-600">Savings</span>
+                  <span className="font-semibold">
+                    {formatCurrency(savings)}
+                  </span>
+                </div>
+                <div className="flex justify-between pt-2 border-t">
+                  <span className="text-sm font-semibold">Total Cash</span>
+                  <span className="font-bold">
+                    {formatCurrency(checking + savings)}
+                  </span>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-lg">Investments</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-2">
+                <div className="flex justify-between">
+                  <span className="text-sm text-slate-600">Roth IRA</span>
+                  <span className="font-semibold">
+                    {formatCurrency(
+                      accounts
+                        .filter((a) => a.account_type === "roth_ira")
+                        .reduce((sum, a) => sum + Number(a.current_balance), 0),
+                    )}
+                  </span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-sm text-slate-600">Brokerage</span>
+                  <span className="font-semibold">
+                    {formatCurrency(
+                      accounts
+                        .filter((a) => a.account_type === "brokerage")
+                        .reduce((sum, a) => sum + Number(a.current_balance), 0),
+                    )}
+                  </span>
+                </div>
+                <div className="flex justify-between pt-2 border-t">
+                  <span className="text-sm font-semibold">
+                    Total Investments
+                  </span>
+                  <span className="font-bold">
+                    {formatCurrency(investments)}
+                  </span>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-lg">Debt</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-2">
+                <div className="flex justify-between">
+                  <span className="text-sm text-slate-600">Credit Cards</span>
+                  <span className="font-semibold text-red-600">
+                    {formatCurrency(creditCardDebt)}
+                  </span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-sm text-slate-600">Loans</span>
+                  <span className="font-semibold text-red-600">
+                    {formatCurrency(loans)}
+                  </span>
+                </div>
+                <div className="flex justify-between pt-2 border-t">
+                  <span className="text-sm font-semibold">Total Debt</span>
+                  <span className="font-bold text-red-600">
+                    {formatCurrency(totalLiabilities)}
+                  </span>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+
+          {/* Accounts Section */}
+          <div>
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-2xl font-semibold">Accounts</h2>
+              <Button onClick={() => setAccountDialogOpen(true)} size="sm">
+                <Plus className="h-4 w-4 mr-1" />
+                Add Account
+              </Button>
             </div>
-            <div className="flex justify-between">
-              <span className="text-sm text-slate-600">Loans</span>
-              <span className="font-semibold text-red-600">
-                {formatCurrency(loans)}
-              </span>
+            <AccountList
+              accounts={accounts}
+              onUpdate={loadData}
+              userId={userId}
+            />
+          </div>
+
+          {/* Assets Section */}
+          <div>
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-2xl font-semibold">Assets</h2>
+              <Button onClick={() => setAssetDialogOpen(true)} size="sm">
+                <Plus className="h-4 w-4 mr-1" />
+                Add Asset
+              </Button>
             </div>
-            <div className="flex justify-between pt-2 border-t">
-              <span className="text-sm font-semibold">Total Debt</span>
-              <span className="font-bold text-red-600">
-                {formatCurrency(totalLiabilities)}
-              </span>
-            </div>
-          </CardContent>
-        </Card>
-      </div>
+            <AssetList assets={assets} onUpdate={loadData} userId={userId} />
+          </div>
 
-      {/* Accounts Section */}
-      <div>
-        <div className="flex items-center justify-between mb-4">
-          <h2 className="text-2xl font-semibold">Accounts</h2>
-          <Button onClick={() => setAccountDialogOpen(true)} size="sm">
-            <Plus className="h-4 w-4 mr-1" />
-            Add Account
-          </Button>
-        </div>
-        <AccountList accounts={accounts} onUpdate={loadData} userId={userId} />
-      </div>
+          {/* Dialogs */}
+          <AccountDialog
+            open={accountDialogOpen}
+            onOpenChange={setAccountDialogOpen}
+            onSuccess={loadData}
+            userId={userId}
+          />
 
-      {/* Assets Section */}
-      <div>
-        <div className="flex items-center justify-between mb-4">
-          <h2 className="text-2xl font-semibold">Assets</h2>
-          <Button onClick={() => setAssetDialogOpen(true)} size="sm">
-            <Plus className="h-4 w-4 mr-1" />
-            Add Asset
-          </Button>
-        </div>
-        <AssetList assets={assets} onUpdate={loadData} userId={userId} />
-      </div>
-
-      {/* Dialogs */}
-      <AccountDialog
-        open={accountDialogOpen}
-        onOpenChange={setAccountDialogOpen}
-        onSuccess={loadData}
-        userId={userId}
-      />
-
-      <AssetDialog
-        open={assetDialogOpen}
-        onOpenChange={setAssetDialogOpen}
-        onSuccess={loadData}
-        userId={userId}
-      />
+          <AssetDialog
+            open={assetDialogOpen}
+            onOpenChange={setAssetDialogOpen}
+            onSuccess={loadData}
+            userId={userId}
+          />
+        </>
+      )}
     </div>
   );
 }

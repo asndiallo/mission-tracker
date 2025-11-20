@@ -1,12 +1,11 @@
 "use client";
 
 import { Calendar, CheckCircle2, ChevronRight, Target, X } from "lucide-react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import type { Milestone, Phase, Task } from "@/lib/supabase";
 import { useCallback, useEffect, useState } from "react";
-
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import type { Milestone, Phase, Task } from "@/lib/supabase";
 import { formatDate } from "@/lib/utils/dates";
 
 interface NextAction {
@@ -40,13 +39,6 @@ export function TodayNextStep({
   onMilestoneComplete,
 }: TodayNextStepProps) {
   const [nextAction, setNextAction] = useState<NextAction | null>(null);
-
-  useEffect(() => {
-    if (isOpen) {
-      const action = selectNextAction(tasks, milestones, phases);
-      setNextAction(action);
-    }
-  }, [isOpen, tasks, milestones, phases]);
 
   const selectNextAction = useCallback(
     (
@@ -161,6 +153,13 @@ export function TodayNextStep({
     },
     [],
   );
+
+  useEffect(() => {
+    if (isOpen) {
+      const action = selectNextAction(tasks, milestones, phases);
+      setNextAction(action);
+    }
+  }, [isOpen, tasks, milestones, phases, selectNextAction]);
 
   const handleComplete = () => {
     if (!nextAction) return;

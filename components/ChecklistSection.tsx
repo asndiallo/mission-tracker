@@ -59,7 +59,7 @@ export function ChecklistSection({ title, items, onToggle, className }: Props) {
         <div className="space-y-2">
           {items.map((item, index) => (
             <label
-              key={index}
+              key={`${index}-${item.text}`}
               className={cn(
                 "flex items-start gap-3 p-3 rounded-lg border transition-all",
                 onToggle ? "cursor-pointer" : "cursor-default",

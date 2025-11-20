@@ -208,7 +208,7 @@ export function RoadmapTimeline({
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                       {phase.sections.map((section, idx) => (
                         <div
-                          key={idx}
+                          key={`${idx}-${section.title}`}
                           className="text-sm flex items-center gap-2 p-2 bg-slate-50 rounded border border-slate-200"
                         >
                           {section.icon && <span>{section.icon}</span>}
@@ -234,7 +234,7 @@ export function RoadmapTimeline({
                     <div className="space-y-1">
                       {phase.successMetrics.slice(0, 3).map((metric, idx) => (
                         <div
-                          key={idx}
+                          key={`${idx}-${metric.metric}`}
                           className="text-sm flex items-start gap-2 p-2 bg-green-50 rounded border border-green-200"
                         >
                           <span className="text-green-600">✓</span>

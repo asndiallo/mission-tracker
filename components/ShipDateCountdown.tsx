@@ -1,11 +1,10 @@
 "use client";
 
-import { Card, CardContent } from "@/components/ui/card";
-import { daysUntil, formatDate } from "@/lib/utils/dates";
 import { differenceInYears, parseISO } from "date-fns";
 import { useEffect, useState } from "react";
-
+import { Card, CardContent } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
+import { daysUntil, formatDate } from "@/lib/utils/dates";
 
 interface Props {
   shipDate: string;

@@ -141,7 +141,7 @@ export function PhaseDetailView({ phase, onChecklistToggle }: Props) {
             const canCollapse = section.collapsible !== false;
 
             return (
-              <Card key={index}>
+              <Card key={section.title}>
                 <CardHeader
                   className={cn(
                     "pb-3",
@@ -168,9 +168,9 @@ export function PhaseDetailView({ phase, onChecklistToggle }: Props) {
                 {!isCollapsed && (
                   <CardContent>
                     <ul className="space-y-2">
-                      {section.items.map((item, itemIndex) => (
+                      {section.items.map((item, _itemIndex) => (
                         <li
-                          key={itemIndex}
+                          key={item}
                           className="flex items-start gap-3 text-sm text-slate-700"
                         >
                           <span className="text-blue-500 mt-0.5">•</span>
@@ -201,7 +201,7 @@ export function PhaseDetailView({ phase, onChecklistToggle }: Props) {
             const progress = Math.round((completedCount / totalCount) * 100);
 
             return (
-              <Card key={checklistIndex}>
+              <Card key={checklist.title}>
                 <CardHeader className="pb-3">
                   <div className="flex items-center justify-between">
                     <CardTitle className="text-lg">{checklist.title}</CardTitle>
@@ -235,7 +235,7 @@ export function PhaseDetailView({ phase, onChecklistToggle }: Props) {
                   <div className="space-y-2">
                     {checklist.items.map((item, itemIndex) => (
                       <label
-                        key={itemIndex}
+                        key={item.text}
                         className={cn(
                           "flex items-start gap-3 p-3 rounded-lg border transition-all cursor-pointer",
                           item.completed
@@ -283,7 +283,7 @@ export function PhaseDetailView({ phase, onChecklistToggle }: Props) {
             <div className="space-y-3">
               {phase.successMetrics.map((metric, index) => (
                 <div
-                  key={index}
+                  key={metric.metric}
                   className="flex items-start gap-3 p-3 bg-white rounded-lg border border-green-200"
                 >
                   <span
@@ -318,7 +318,7 @@ export function PhaseDetailView({ phase, onChecklistToggle }: Props) {
           </h3>
           {phase.decisionPoints.map((decision, index) => (
             <Card
-              key={index}
+              key={`${index}-${decision.title}`}
               className="border-l-4 border-l-orange-500 bg-orange-50"
             >
               <CardHeader className="pb-3">
@@ -347,7 +347,7 @@ export function PhaseDetailView({ phase, onChecklistToggle }: Props) {
                     <ul className="space-y-1">
                       {decision.actions.map((action, actionIndex) => (
                         <li
-                          key={actionIndex}
+                          key={`${actionIndex}-${action}`}
                           className="flex items-start gap-2 text-sm text-orange-800"
                         >
                           <span className="text-orange-600">→</span>
